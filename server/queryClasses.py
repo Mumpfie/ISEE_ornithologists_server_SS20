@@ -1,5 +1,6 @@
 from enum import Enum
 
+
 class Color(str, Enum):
     black = 'black'
     grey = 'grey'
@@ -11,12 +12,14 @@ class Color(str, Enum):
     blue = 'blue'
     orange = 'orange'
 
-#TODO: think of appropiate size measure
-class Size(Enum):
+
+# TODO: think of appropriate size measure
+class Size(str, Enum):
     random_size = 'random_size'
 
-# referenz: 
-class Shape(str, Enum):    
+
+# reference: https://identify.whatbird.com/mwg/20/0/1/10/vals.aspx#Values
+class Shape(str, Enum):
     chicken_like_marsh = 'Chicken-like-Marsh'
     duck_like = 'Duck-like'
     gull_like = 'Gull-like'
@@ -31,6 +34,7 @@ class Shape(str, Enum):
     tree_clinging_like = 'Tree-clinging-like'
     upland_ground_like = 'Upland-ground-like'
     upright_perching_water_like = 'Upright-perching Water-like'
+
 
 # class Region():
 #     '''
@@ -79,8 +83,7 @@ class Breeding(str, Enum):
     no = 'NO'
     so = 'SO'
     an = 'AN'
-    soc ='So. Cone'
-    
+    soc = 'So. Cone'
 
     # na = ('NA', 'North America')
     # ma = ('MA', 'Middle America')

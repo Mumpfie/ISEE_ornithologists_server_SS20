@@ -55,6 +55,7 @@ class Occurrence(OccurrenceBase):
             ).isoformat()
         }
 
+
 class OccurrenceCreate(OccurrenceBase):
     user_id: int
     bird_id: int
@@ -117,3 +118,5 @@ class Species(BaseModel):
 
 User.update_forward_refs()
 Occurrence.update_forward_refs()
+BirdBase.update_forward_refs()
+Bird.update_forward_refs()
