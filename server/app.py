@@ -1,4 +1,4 @@
-from typing import List, Dict
+from typing import List
 from pathlib import Path
 
 from fastapi import FastAPI, Depends, HTTPException, File, UploadFile
@@ -185,7 +185,7 @@ async def get_file(path: str):
 
 
 @app.post("/files/", tags=["Files"])
-async def upload_file(file: UploadFile = File(...), response_model=Dict[str, float]):
+async def upload_file(file: UploadFile = File(...)):
     path = Path(picture_dir, file.filename)
     await uploadPicture(file, path)
     return {"filename": file.filename}
