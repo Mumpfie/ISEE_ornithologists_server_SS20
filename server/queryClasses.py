@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class Color(str, Enum):
+class Color(Enum):
     black = 'black'
     grey = 'grey'
     white = 'white'
@@ -14,12 +14,12 @@ class Color(str, Enum):
 
 
 # TODO: think of appropriate size measure
-class Size(str, Enum):
+class Size(Enum):
     random_size = 'random_size'
 
 
 # reference: https://identify.whatbird.com/mwg/20/0/1/10/vals.aspx#Values
-class Shape(str, Enum):
+class Shape(Enum):
     chicken_like_marsh = 'Chicken-like-Marsh'
     duck_like = 'Duck-like'
     gull_like = 'Gull-like'
@@ -60,7 +60,7 @@ class Shape(str, Enum):
 #         return self.name
 
 
-class Breeding(str, Enum):
+class Breeding(Enum):
     # def __new__(cls, short: str, name: str):
     #     region = str.__new__(cls, [short])
     #     region.short = short

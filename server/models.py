@@ -1,18 +1,21 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, Float, String, DateTime
+from sqlalchemy import Column, ForeignKey, Integer, Float, String, DateTime, Enum
 from sqlalchemy.orm import relationship
 
 from .database import Base
+from .queryClasses import Color, Size, Shape, Breeding
+
 
 class User(Base):
     __tablename__ = "user"
 
     id = Column(Integer, primary_key=True)
-    name = Column(String(25), unique=True, nullable=False)    
+    name = Column(String(25), unique=True, nullable=False)
     picture_url = Column(String(100))
     bird_occurrences = relationship('Occurrence', backref='user')
 
     def __repr__(self):
         return '<User {}>'.format(self.name)
+
 
 class Occurrence(Base):
     __tablename__ = "Occurrence"
@@ -29,6 +32,7 @@ class Occurrence(Base):
     def __repr__(self):
         return '<Occurrence {} {} {}>'.format(self.id, self.timestamp, self.user_id)
 
+
 class Bird(Base):
     __tablename__ = "bird"
 
@@ -36,21 +40,20 @@ class Bird(Base):
     taxon = Column(String(25))
     genus = Column(String(25))
     order = Column(String(25))
-    family_scientific_name = Column(String(25),
-        ForeignKey('family.scientific_name'), nullable=False)
-    species_scientific_name = Column(String(25),
-        ForeignKey('species.scientific_name'), nullable=False)
-    authority  = Column(String(25))
-    color = Column(String(25))
-    size = Column(String(25))
-    shape = Column(String(25))
-    breeding = Column(String(25))
+    family_scientific_name = Column(String(25), ForeignKey('family.scientific_name'), nullable=False)
+    species_scientific_name = Column(String(25), ForeignKey('species.scientific_name'), nullable=False)
+    authority = Column(String(25))
+    color = Column(Enum(Color))
+    size = Column(Enum(Size))
+    shape = Column(Enum(Shape))
+    breeding = Column(Enum(Breeding))
     subregion = Column(String(25))
     picture_url = Column(String(100))
     bird_occurrences = relationship('Occurrence', backref='bird')
 
     def __repr__(self):
         return '<Bird {}>'.format(self.species_scientific_name)
+
 
 class Family(Base):
     __tablename__ = "family"
@@ -63,6 +66,7 @@ class Family(Base):
     def __repr__(self):
         return '<Family {}>'.format(self.scientific_name)
 
+
 class Species(Base):
     __tablename__ = "species"
 
@@ -73,4 +77,3 @@ class Species(Base):
 
     def __repr__(self):
         return '<Species {}>'.format(self.scientific_name)
-
