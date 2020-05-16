@@ -10,7 +10,9 @@ from ..utils import uploadPicture
 user_picture_dir = './pictures/user'
 
 
-def create_user(db: Session, user: schemas.UserCreate) -> schemas.User:
+def create_user(db: Session, user: schemas.User) -> schemas.User:
+    if(get_user_by_name(db, user.name)):
+        raise HTTPException(422, "User already registered")
     db_user = models.User(**user.dict())
     db.add(db_user)
     db.commit()
@@ -30,24 +32,21 @@ async def add_picture_to_user(db: Session, id: int, picture: UploadFile) -> sche
     return user
 
 
-def read_user(db: Session, id: int) -> schemas.User:
+def get_user(db: Session, id: int) -> schemas.User:
     return db.query(models.User).get(id)
 
-
-def query_user(db: Session, name: str = None) -> List[schemas.User]:
-    if name:
-        print('test')
-        return db.query(models.User).filter(models.User.name == name).all()
+def get_users(db: Session, name: str, skip: int, limit: int) -> List[schemas.User]:
+    if(name is None):
+        return db.query(models.User).slice(skip, limit).all()
     else:
-        print('test123')
-        return db.query(models.User).all()
+        return db.query(models.User).filter(models.User.name == name).all()
 
-
-def update_user(db: Session, id: int, new_prop: schemas.UserCreate) -> schemas.User:
+def update_user(db: Session, id: int, new_prop: schemas.User) -> schemas.User:
     user = db.query(models.User).get(id)
+    if (user is None):
+        raise HTTPException(422, "User not existing")
 
-    for attr, value in new_prop.dict().items():
-        setattr(user, attr, value)
+    user.name = new_prop.name
 
     db.commit()
     db.refresh(user)

@@ -9,14 +9,12 @@ from .queryClasses import Color, Size, Shape, Breeding
 
 # User
 
-class UserBase(BaseModel):
+
+class User(BaseModel):
     id: int = Field(default=None, readOnly=True)
     picture_url: str = Field(default=None, readOnly=True)
     name: str
-
-
-class User(UserBase):
-    bird_occurrences: List[Occurrence] = []
+    bird_occurrences: List[Occurrence] = Field(default=[], readOnly=True)
 
     class Config:
         orm_mode = True
@@ -26,14 +24,9 @@ class User(UserBase):
             ).isoformat()
         }
 
-
-class UserCreate(UserBase):
-    pass
-
-
 # Occurrence
 
-class OccurrenceBase(BaseModel):
+class Occurrence(BaseModel):
     id: int = Field(default=None, readOnly=True)
     timestamp: datetime = None
     note: str = None
@@ -41,11 +34,10 @@ class OccurrenceBase(BaseModel):
     longitude: float = Field(format="double")
     latitude: float = Field(format="double")
     altitude: float = Field(default=0, format="double")
-
-
-class Occurrence(OccurrenceBase):
-    user: User
-    bird: BirdBase
+    user: User = Field(readOnly=True)
+    bird: Bird = Field(readOnly=True)
+    user_id: int
+    bird_id: int
 
     class Config:
         orm_mode = True
@@ -56,14 +48,9 @@ class Occurrence(OccurrenceBase):
         }
 
 
-class OccurrenceCreate(OccurrenceBase):
-    user_id: int
-    bird_id: int
-
-
 # Bird
 
-class BirdBase(BaseModel):
+class Bird(BaseModel):
     id: int = Field(default=None, readOnly=True)
     picture_url: str
     taxon: str
@@ -77,13 +64,7 @@ class BirdBase(BaseModel):
     subregion: str
     family: Family
     species: Species
-
-    class Config:
-        orm_mode = True
-
-
-class Bird(BirdBase):
-    occurrences: List[Occurrence] = []
+    occurrences: List[Occurrence] = Field(readOnly=True, default=[])
 
     class Config:
         orm_mode = True
@@ -115,8 +96,6 @@ class Species(BaseModel):
     class Config:
         orm_mode = True
 
-
 User.update_forward_refs()
 Occurrence.update_forward_refs()
-BirdBase.update_forward_refs()
 Bird.update_forward_refs()
