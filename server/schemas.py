@@ -27,9 +27,6 @@ class User(UserBase):
         }
 
 
-User.update_forward_refs()
-
-
 class UserCreate(UserBase):
     pass
 
@@ -58,10 +55,6 @@ class Occurrence(OccurrenceBase):
             ).isoformat()
         }
 
-
-Occurrence.update_forward_refs()
-
-
 class OccurrenceCreate(OccurrenceBase):
     user_id: int
     bird_id: int
@@ -86,8 +79,6 @@ class BirdBase(BaseModel):
 
     class Config:
         orm_mode = True
-
-BirdBase.update_forward_refs()
 
 
 class Bird(BirdBase):
@@ -122,3 +113,7 @@ class Species(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+User.update_forward_refs()
+Occurrence.update_forward_refs()
