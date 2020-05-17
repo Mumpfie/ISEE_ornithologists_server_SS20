@@ -3,6 +3,7 @@ from typing import List, Dict, Callable
 from pathlib import Path
 
 from fastapi import FastAPI, Depends, HTTPException, File, UploadFile
+from fastapi.responses import FileResponse
 from fastapi.openapi.utils import get_openapi
 from fastapi import Body, FastAPI, Request, Response
 from fastapi.routing import APIRoute
