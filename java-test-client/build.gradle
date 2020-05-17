@@ -1,0 +1,74 @@
+plugins {
+    id 'java'
+    id "org.openapi.generator" version "4.3.1"
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'io.gsonfire:gson-fire:1.0.1'
+    implementation 'io.swagger:swagger-annotations:1.6.1'
+    implementation 'com.google.code.findbugs:jsr305:3.0.2'
+    implementation "com.squareup.okhttp3:okhttp:4.6.0"
+    implementation "com.squareup.okhttp3:logging-interceptor:4.6.0"
+}
+
+openApiValidate {
+    inputSpec = "$rootDir/openapi.json".toString()
+}
+
+openApiGenerate {
+    generatorName = "java"
+    inputSpec = "$rootDir/openapi.json".toString()
+    outputDir = "$buildDir/generated".toString()
+    apiPackage = "org.example.test.api"
+    invokerPackage = "org.example.test.invoker"
+    modelPackage = "org.example.test.model"
+    configOptions = [
+            dateLibrary            : "java8",
+            library                : "okhttp-gson",
+            java8                  : "true",
+            serializableModel      : "true",
+            serializationLibrary   : "gson",
+            useGzipFeature         : "true",
+            hideGenerationTimestamp: "true"
+    ]
+    systemProperties = [
+            modelTests     : "false",
+            modelDocs      : "false",
+            apiTests       : "false",
+            apiDocs        : "false",
+            apis           : "",
+            models         : "",
+            invoker        : "",
+            supportingFiles: "AndroidManifest.xml," +
+                    "ApiKeyAuth.java," +
+                    "Authentication.java," +
+                    "HttpBasicAuth.java," +
+                    "HttpBearerAuth.java," +
+                    "ApiCallback.java," +
+                    "ApiClient.java," +
+                    "ApiException.java," +
+                    "ApiResponse.java," +
+                    "Configuration.java," +
+                    "GzipRequestInterceptor.java," +
+                    "JSON.java," +
+                    "Pair.java," +
+                    "ProgressRequestBody.java," +
+                    "ProgressResponseBody.java," +
+                    "ServerConfiguration.java," +
+                    "ServerVariable.java," +
+                    "StringUtil.java"
+    ]
+}
+
+tasks.openApiGenerate.dependsOn tasks.openApiValidate
+compileJava.dependsOn tasks.openApiGenerate
+sourceSets.main.java.srcDirs += "$buildDir/generated/src/main/java".toString()
