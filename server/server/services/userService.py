@@ -11,7 +11,7 @@ user_picture_dir = './pictures/user'
 
 
 def create_user(db: Session, user: schemas.User) -> schemas.User:
-    if(get_user_by_name(db, user.name)):
+    if(get_users(db, user.name)):
         raise HTTPException(422, "User already registered")
     db_user = models.User(**user.dict())
     db.add(db_user)

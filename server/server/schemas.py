@@ -96,6 +96,12 @@ class Species(BaseModel):
     class Config:
         orm_mode = True
 
+class FileResponse(BaseModel):
+    file_url: str
+
+    class Config:
+        orm_mode = True
+
 User.update_forward_refs()
 Occurrence.update_forward_refs()
 Bird.update_forward_refs()

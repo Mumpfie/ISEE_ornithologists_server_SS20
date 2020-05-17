@@ -210,8 +210,10 @@ def read_species(id: int, db: Session = Depends(get_db)):
 # Files
 ##################
 
-@app.post("/files/", response_model=Dict[str, float], tags=["Files"])
+@app.post("/files/", response_model=FileResponse, tags=["Files"])
 async def upload_file(file: UploadFile = File(...)):
     path = Path(picture_dir, file.filename)
     await uploadPicture(file, path)
-    return {"filename": file.filename}
+    response : FileResponse = FileResponse.construct()
+    response.file_url = file.filename
+    return response
