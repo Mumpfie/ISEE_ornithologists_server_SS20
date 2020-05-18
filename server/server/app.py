@@ -2,10 +2,8 @@ import gzip
 from typing import List, Dict, Callable
 from pathlib import Path
 
-from fastapi import FastAPI, Depends, HTTPException, File, UploadFile
-from fastapi.responses import FileResponse
+from fastapi import FastAPI, Depends, HTTPException, File, UploadFile, Request, Response
 from fastapi.openapi.utils import get_openapi
-from fastapi import Body, FastAPI, Request, Response
 from fastapi.routing import APIRoute
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
@@ -211,10 +209,10 @@ def read_species(id: int, db: Session = Depends(get_db)):
 # Files
 ##################
 
-@app.post("/files/", response_model=FileResponse, tags=["Files"])
+@app.post("/files/", tags=["Files"], response_model=schemas.FileResponse)
 async def upload_file(file: UploadFile = File(...)):
     path = Path(picture_dir, file.filename)
     await uploadPicture(file, path)
-    response : FileResponse = FileResponse.construct()
+    response : schemas.FileResponse = schemas.FileResponse.construct()
     response.file_url = file.filename
     return response
