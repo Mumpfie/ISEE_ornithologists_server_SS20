@@ -9,6 +9,18 @@ from ..utils import uploadPicture
 
 user_picture_dir = './pictures/user'
 
+def clean_user(user: schemas.User) -> schemas.User:
+    for oc in user.bird_occurrences:
+        if (hasattr(oc.user, "bird_occurrences") and oc.user.bird_occurrences is not None):
+            oc.user.bird_occurrences.clear()
+        if (hasattr(oc.bird, "occurrences") and oc.bird.occurrences is not None):
+            oc.bird.occurrences.clear()
+    return user
+
+def clean_user_list(users : List[schemas.User]) -> List[schemas.User]:
+    for user in users:
+        clean_user(user)
+    return users
 
 def create_user(db: Session, user: schemas.User) -> schemas.User:
     if get_users(db, user.name):
@@ -17,7 +29,7 @@ def create_user(db: Session, user: schemas.User) -> schemas.User:
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
-    return db_user
+    return clean_user(db_user)
 
 
 async def add_picture_to_user(db: Session, id: int, picture: UploadFile) -> schemas.User:
@@ -29,17 +41,17 @@ async def add_picture_to_user(db: Session, id: int, picture: UploadFile) -> sche
     user.picture_url = str(path)
     db.commit()
     db.refresh(user)
-    return user
+    return clean_user(user)
 
 
 def get_user(db: Session, id: int) -> schemas.User:
-    return db.query(models.User).get(id)
+    return clean_user(db.query(models.User).get(id))
 
 def get_users(db: Session, name: str, skip: int = 0, limit: int = 20) -> List[schemas.User]:
     if name is None:
-        return db.query(models.User).slice(skip, limit).all()
+        return clean_user_list(db.query(models.User).slice(skip, limit).all())
     else:
-        return db.query(models.User).filter(models.User.name == name).all()
+        return clean_user_list(db.query(models.User).filter(models.User.name == name).all())
 
 def update_user(db: Session, id: int, new_prop: schemas.User) -> schemas.User:
     user = db.query(models.User).get(id)
@@ -50,11 +62,11 @@ def update_user(db: Session, id: int, new_prop: schemas.User) -> schemas.User:
 
     db.commit()
     db.refresh(user)
-    return user
+    return clean_user(user)
 
 
 def delete_user(db: Session, id: int) -> schemas.User:
     user = db.query(models.User).get(id)
     db.delete(user)
     db.commit()
-    return user
+    return clean_user(user)
