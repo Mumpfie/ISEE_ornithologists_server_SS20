@@ -9,12 +9,11 @@ from .queryClasses import Color, Size, Shape, Breeding
 
 # User
 
-
 class User(BaseModel):
     id: int = Field(default=None, readOnly=True)
     picture_url: str = Field(default=None, readOnly=True)
     name: str
-    bird_occurrences: List[Occurrence] = Field(default=[], readOnly=True)
+    bird_occurrences: List[Occurrence] = Field(default=[], readOnly=True)  # TODO: infinite recursion
 
     class Config:
         orm_mode = True
@@ -30,12 +29,12 @@ class Occurrence(BaseModel):
     id: int = Field(default=None, readOnly=True)
     timestamp: datetime = None
     note: str = None
-    picture_url: str = None
+    picture_url: str = Field(default=None, readOnly=True)
     longitude: float = Field(format="double")
     latitude: float = Field(format="double")
     altitude: float = Field(default=0, format="double")
-    user: User = Field(readOnly=True)
-    bird: Bird = Field(readOnly=True)
+    user: User = Field(default=None, readOnly=True)  # TODO: value still required
+    bird: Bird = Field(default=None, readOnly=True)  # TODO: value still required
     user_id: int
     bird_id: int
 
@@ -52,7 +51,7 @@ class Occurrence(BaseModel):
 
 class Bird(BaseModel):
     id: int = Field(default=None, readOnly=True)
-    picture_url: str
+    picture_url: str = None
     taxon: str
     genus: str
     order: str
@@ -61,10 +60,10 @@ class Bird(BaseModel):
     size: Size
     shape: Shape
     breeding: Breeding
-    subregion: str
+    subregion: str = None
     family: Family
     species: Species
-    occurrences: List[Occurrence] = Field(readOnly=True, default=[])
+    occurrences: List[Occurrence] = Field(default=[], readOnly=True)  # TODO: infinite recursion
 
     class Config:
         orm_mode = True
@@ -79,8 +78,8 @@ class Bird(BaseModel):
 
 class Family(BaseModel):
     name_scientific: str
-    name_english: str
-    name_german: str
+    name_english: str = None
+    name_german: str = None
 
     class Config:
         orm_mode = True
@@ -90,8 +89,8 @@ class Family(BaseModel):
 
 class Species(BaseModel):
     name_scientific: str
-    name_english: str
-    name_german: str
+    name_english: str = None
+    name_german: str = None
 
     class Config:
         orm_mode = True

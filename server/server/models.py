@@ -1,4 +1,4 @@
-from sqlalchemy import Column, ForeignKey, Integer, Float, String, DateTime, Enum
+from sqlalchemy import Column, ForeignKey, Integer, Float, String, DateTime, Enum, Text
 from sqlalchemy.orm import relationship
 
 from .database import Base
@@ -22,6 +22,7 @@ class Occurrence(Base):
 
     id = Column(Integer, primary_key=True)
     timestamp = Column(DateTime, nullable=False)
+    note = Column(Text)
     picture_url = Column(String(100))
     longitude = Column(Float)
     latitude = Column(Float)
@@ -40,8 +41,8 @@ class Bird(Base):
     taxon = Column(String(25))
     genus = Column(String(25))
     order = Column(String(25))
-    family_scientific_name = Column(String(25), ForeignKey('family.scientific_name'), nullable=False)
-    species_scientific_name = Column(String(25), ForeignKey('species.scientific_name'), nullable=False)
+    family_scientific_name = Column(String(25), ForeignKey('family.name_scientific'), nullable=False)
+    species_scientific_name = Column(String(25), ForeignKey('species.name_scientific'), nullable=False)
     authority = Column(String(25))
     color = Column(Enum(Color))
     size = Column(Enum(Size))
@@ -58,22 +59,22 @@ class Bird(Base):
 class Family(Base):
     __tablename__ = "family"
 
-    scientific_name = Column(String(25), primary_key=True)
-    englisch_name = Column(String(25))
-    german_name = Column(String(25))
+    name_scientific = Column(String(25), primary_key=True)
+    name_english = Column(String(25))
+    name_german = Column(String(25))
     birds = relationship('Bird', backref='family')
 
     def __repr__(self):
-        return '<Family {}>'.format(self.scientific_name)
+        return '<Family {}>'.format(self.name_scientific)
 
 
 class Species(Base):
     __tablename__ = "species"
 
-    scientific_name = Column(String(25), primary_key=True)
-    englisch_name = Column(String(25))
-    german_name = Column(String(25))
+    name_scientific = Column(String(25), primary_key=True)
+    name_english = Column(String(25))
+    name_german = Column(String(25))
     birds = relationship('Bird', backref='species')
 
     def __repr__(self):
-        return '<Species {}>'.format(self.scientific_name)
+        return '<Species {}>'.format(self.name_scientific)
