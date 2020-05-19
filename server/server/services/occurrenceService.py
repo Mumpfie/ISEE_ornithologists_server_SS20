@@ -10,10 +10,15 @@ from ..utils import uploadPicture
 
 occurrence_picture_dir = './pictures/occurrence'
 
-
-def create_occurrence(db: Session, occurrence: schemas.Occurrence):
+def create_occurrence(db: Session, occurrence: schemas.OccurrenceCreate):
     if occurrence.timestamp is None:
         occurrence.timestamp = datetime.now()
+
+    if db.query(models.User).get(occurrence.user_id) is None:
+        raise HTTPException(400, "User with id {} doesn't exist".format(occurrence.bird_id))
+
+    if db.query(models.Bird).get(occurrence.bird_id) is None:
+        raise HTTPException(400, "Bird with id {} doesn't exist".format(occurrence.bird_id))
 
     db_occurrence = models.Occurrence(**occurrence.dict())
     print(db_occurrence)
@@ -71,25 +76,20 @@ def get_occurrences(
     return query.limit(limit).all()
 
 
-def update_occurrence(db: Session, id: int, updated_occurrence: schemas.Occurrence) -> models.Occurrence:
+def update_occurrence(db: Session, id: int, updated_occurrence: schemas.OccurrenceUpdate) -> models.Occurrence:
     occurrence = db.query(models.Occurrence).get(id)
 
-    if updated_occurrence.timestamp is not None:
-        occurrence.timestamp = updated_occurrence.timestamp
-    if updated_occurrence.note is not None:
-        occurrence.note = updated_occurrence.note
-    if updated_occurrence.picture_url is not None:
-        occurrence.picture_url = updated_occurrence.picture_url
-    if updated_occurrence.longitude is not None:
-        occurrence.longitude = updated_occurrence.longitude
-    if updated_occurrence.latitude is not None:
-        occurrence.latitude = updated_occurrence.latitude
-    if updated_occurrence.altitude is not None:
-        occurrence.altitude = updated_occurrence.altitude
     if updated_occurrence.user_id is not None:
-        occurrence.user_id = updated_occurrence.user_id
+        if db.query(models.User).get(updated_occurrence.user_id) is None:
+            raise HTTPException(400, "User with id {} doesn't exist".format(occurrence.bird_id))
+
     if updated_occurrence.bird_id is not None:
-        occurrence.bird_id = updated_occurrence.bird_id
+        if db.query(models.Bird).get(updated_occurrence.bird_id) is None:
+            raise HTTPException(400, "Bird with id {} doesn't exist".format(occurrence.bird_id))
+
+    new_prop = updated_occurrence.dict(exclude_unset=True)
+    for key, value in new_prop.items():
+        setattr(occurrence, key, value)
 
     db.commit()
     db.refresh(occurrence)
