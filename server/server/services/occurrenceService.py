@@ -15,7 +15,7 @@ def create_occurrence(db: Session, occurrence: schemas.OccurrenceCreate):
         occurrence.timestamp = datetime.now()
 
     if db.query(models.User).get(occurrence.user_id) is None:
-        raise HTTPException(400, "User with id {} doesn't exist".format(occurrence.bird_id))
+        raise HTTPException(400, "User with id {} doesn't exist".format(occurrence.user_id))
 
     if db.query(models.Bird).get(occurrence.bird_id) is None:
         raise HTTPException(400, "Bird with id {} doesn't exist".format(occurrence.bird_id))
@@ -30,6 +30,10 @@ def create_occurrence(db: Session, occurrence: schemas.OccurrenceCreate):
 
 async def add_picture_to_occurrence(db: Session, id: int, picture: UploadFile) -> schemas.Occurrence:
     occurrence = db.query(models.Occurrence).get(id)
+    print(occurrence)
+
+    if occurrence is None:
+        raise HTTPException(400, "Occurrence with id {} doesn't exist".format(id))
 
     path = Path(occurrence_picture_dir, str(occurrence.id) + '.jpeg')
     path = await uploadPicture(picture, path, override=True)
@@ -81,11 +85,11 @@ def update_occurrence(db: Session, id: int, updated_occurrence: schemas.Occurren
 
     if updated_occurrence.user_id is not None:
         if db.query(models.User).get(updated_occurrence.user_id) is None:
-            raise HTTPException(400, "User with id {} doesn't exist".format(occurrence.bird_id))
+            raise HTTPException(400, "User with id {} doesn't exist".format(updated_occurrence.user_id))
 
     if updated_occurrence.bird_id is not None:
         if db.query(models.Bird).get(updated_occurrence.bird_id) is None:
-            raise HTTPException(400, "Bird with id {} doesn't exist".format(occurrence.bird_id))
+            raise HTTPException(400, "Bird with id {} doesn't exist".format(updated_occurrence.bird_id))
 
     new_prop = updated_occurrence.dict(exclude_unset=True)
     for key, value in new_prop.items():

@@ -50,8 +50,8 @@ class BaseOccurrence(BaseModel):
 
 
 class Occurrence(BaseOccurrence):
-    user: BaseUser  # = Field(default=None, readOnly=True)  # TODO: value still required
-    bird: BaseBird  # = Field(default=None, readOnly=True)  # TODO: value still required
+    user: BaseUser  # = Field(default=None, readOnly=True)
+    bird: BaseBird  # = Field(default=None, readOnly=True)
 
 
 class OccurrenceCreate(BaseOccurrence):
@@ -59,7 +59,7 @@ class OccurrenceCreate(BaseOccurrence):
     bird_id: int
 
 
-class OccurrenceUpdate(OccurrenceCreate):
+class OccurrenceUpdate(BaseModel):
     timestamp: datetime = None
     note: str = None
     longitude: float = Field(default=None, format="double")

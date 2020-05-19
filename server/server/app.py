@@ -116,8 +116,8 @@ def create_occurrence(occurrence: schemas.OccurrenceCreate, db: Session = Depend
     return occurrenceService.create_occurrence(db, occurrence)
 
 @app.post("/occurrence/{id}", tags=["Occurrence"], response_model=schemas.Occurrence)
-def add_picture_to_occurrence(id: int, picture: UploadFile = File(...), db: Session = Depends(get_db)):
-    return occurrenceService.add_picture_to_occurrence(db, id, picture)
+async def add_picture_to_occurrence(id: int, picture: UploadFile = File(...), db: Session = Depends(get_db)):
+    return await occurrenceService.add_picture_to_occurrence(db, id, picture)
 
 
 @app.get("/occurrence/{id}", tags=["Occurrence"], response_model=schemas.Occurrence)
@@ -159,6 +159,7 @@ def read_bird(id: int, db: Session = Depends(get_db)):
 
 @app.get("/bird", tags=["Bird"], response_model=List[schemas.Bird])
 def query_bird(
+        part_name: str = None,
         color: Color = None,
         size: Size = None,
         shape: Shape = None,
@@ -167,7 +168,7 @@ def query_bird(
         limit: int = 20,
         db: Session = Depends(get_db)
 ):
-    return birdService.get_birds(db, color, size, shape, breeding, skip, limit)
+    return birdService.get_birds(db, part_name, color, size, shape, breeding, skip, limit)
 
 ##################
 # Family
