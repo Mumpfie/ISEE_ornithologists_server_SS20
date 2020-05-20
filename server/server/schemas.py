@@ -19,7 +19,7 @@ class BaseUser(BaseModel):
 
 
 class User(BaseUser):
-    bird_occurrences: List[BaseOccurrence] = []  # Field(default=[], readOnly=True)  # TODO: infinite recursion
+    bird_occurrences: List[BaseOccurrence] = Field(default=[], readOnly=True)
 
     class Config:
         json_encoders = {
