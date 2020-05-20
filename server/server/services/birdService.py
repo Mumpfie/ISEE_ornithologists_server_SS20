@@ -21,6 +21,7 @@ def clean_birds(birds : List[schemas.Bird]) -> List[schemas.Bird]:
 
 def get_birds(
         db: Session,
+        part_name: str = None,
         color: Color = None,
         size: Size = None,
         shape: Shape = None,
@@ -30,14 +31,16 @@ def get_birds(
 ) -> List[schemas.Bird]:
     query = db.query(models.Bird)
 
+    if part_name is not None:
+        query = query.filter(models.Species.name_english.contains(part_name))
     if color is not None:
-        query.filter(models.Color.color == color)
+        query = query.filter(models.Bird.color == color)
     if size is not None:
-        query.filter(models.Size.size == size)
+        query = query.filter(models.Bird.size == size)
     if shape is not None:
-        query.filter(models.Shape.shape == shape)
+        query = query.filter(models.Bird.shape == shape)
     if breeding is not None:
-        query.filter(models.Bird.breeding == breeding)
+        query = query.filter(models.Bird.breeding == breeding)
 
     return clean_birds(query.slice(skip, limit).all())
 

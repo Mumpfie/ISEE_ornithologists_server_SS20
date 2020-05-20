@@ -13,7 +13,7 @@ class User(BaseModel):
     id: int = Field(default=None, readOnly=True)
     picture_url: str = Field(default=None, readOnly=True)
     name: str
-    bird_occurrences: List[Occurrence] = Field(default=[], readOnly=True)  # TODO: infinite recursion
+    bird_occurrences: List[Occurrence] = Field(default=[], readOnly=True)
 
     class Config:
         orm_mode = True
@@ -63,7 +63,7 @@ class Bird(BaseModel):
     subregion: str = None
     family: Family
     species: Species
-    occurrences: List[Occurrence] = Field(default=[], readOnly=True)  # TODO: infinite recursion
+    occurrences: List[Occurrence] = Field(default=[], readOnly=True)
 
     class Config:
         orm_mode = True

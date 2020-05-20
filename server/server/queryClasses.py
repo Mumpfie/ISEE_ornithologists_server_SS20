@@ -16,6 +16,7 @@ class Color(Enum):
 # TODO: think of appropriate size measure
 class Size(Enum):
     random_size = 'random_size'
+    # TODO: drei Größen erstellen
 
 
 # reference: https://identify.whatbird.com/mwg/20/0/1/10/vals.aspx#Values
