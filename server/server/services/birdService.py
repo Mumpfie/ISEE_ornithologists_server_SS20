@@ -5,6 +5,20 @@ from ..queryClasses import Color, Shape, Size, Breeding
 from fastapi import HTTPException
 from .. import models, schemas
 
+def clean_bird(bird : schemas.Bird) -> schemas.Bird:
+    if(hasattr(bird, "occurrences") and bird.occurrences is not None):
+        for oc in bird.occurrences:
+            if(hasattr(oc.user, "bird_occurrences") and oc.user.bird_occurrences is not None):
+                oc.user.bird_occurrences.clear()
+            if (hasattr(oc.bird, "occurrences") and oc.bird.occurrences is not None):
+                oc.bird.occurrences.clear()
+    return bird
+
+def clean_birds(birds : List[schemas.Bird]) -> List[schemas.Bird]:
+    for bird in birds:
+        clean_bird(bird)
+    return birds
+
 def get_birds(
         db: Session,
         part_name: str = None,
@@ -28,11 +42,11 @@ def get_birds(
     if breeding is not None:
         query = query.filter(models.Bird.breeding == breeding)
 
-    return query.slice(skip, limit).all()
+    return clean_birds(query.slice(skip, limit).all())
 
 
 def get_bird(db: Session, id: int) -> schemas.Bird:
     bird = db.query(models.Bird).get(id)
     if bird is None:
         raise HTTPException(404, "Bird not found")
-    return db.query(models.Bird).get(id)
+    return clean_bird(db.query(models.Bird).get(id))

@@ -9,29 +9,23 @@ from .queryClasses import Color, Size, Shape, Breeding
 
 # User
 
-class BaseUser(BaseModel):
+class User(BaseModel):
     id: int = Field(default=None, readOnly=True)
     picture_url: str = Field(default=None, readOnly=True)
     name: str
+    bird_occurrences: List[Occurrence] = Field(default=[], readOnly=True)
 
     class Config:
         orm_mode = True
-
-
-class User(BaseUser):
-    bird_occurrences: List[BaseOccurrence] = Field(default=[], readOnly=True)
-
-    class Config:
         json_encoders = {
             datetime: lambda dt: dt.replace(
                 microsecond=0, tzinfo=timezone.utc
             ).isoformat()
         }
 
-
 # Occurrence
 
-class BaseOccurrence(BaseModel):
+class Occurrence(BaseModel):
     id: int = Field(default=None, readOnly=True)
     timestamp: datetime = None
     note: str = None
@@ -39,6 +33,10 @@ class BaseOccurrence(BaseModel):
     longitude: float = Field(format="double")
     latitude: float = Field(format="double")
     altitude: float = Field(default=0, format="double")
+    user: User = Field(default=None, readOnly=True)  # TODO: value still required
+    bird: Bird = Field(default=None, readOnly=True)  # TODO: value still required
+    user_id: int
+    bird_id: int
 
     class Config:
         orm_mode = True
@@ -49,40 +47,9 @@ class BaseOccurrence(BaseModel):
         }
 
 
-class Occurrence(BaseOccurrence):
-    user: BaseUser  # = Field(default=None, readOnly=True)
-    bird: BaseBird  # = Field(default=None, readOnly=True)
-
-
-class OccurrenceCreate(BaseOccurrence):
-    user_id: int
-    bird_id: int
-
-
-class OccurrenceUpdate(BaseModel):
-    timestamp: datetime = None
-    note: str = None
-    longitude: float = Field(default=None, format="double")
-    latitude: float = Field(default=None, format="double")
-    altitude: float = Field(default=None, format="double")
-    user_id: int = None
-    bird_id: int = None
-
-    # Dberschreiben des Defaultwertes hat nicht funktioniert
-
-    # class Config:
-    #     fields = {
-    #         'longitude': {'default': None},
-    #         'latitude': {'default': None},
-    #         'altitude': {'default': None},
-    #         'user_id': {'default': None},
-    #         'bird_id': {'default': None}
-    #     }
-
-
 # Bird
 
-class BaseBird(BaseModel):
+class Bird(BaseModel):
     id: int = Field(default=None, readOnly=True)
     picture_url: str = None
     taxon: str
@@ -96,15 +63,10 @@ class BaseBird(BaseModel):
     subregion: str = None
     family: Family
     species: Species
+    occurrences: List[Occurrence] = Field(default=[], readOnly=True)  # TODO: infinite recursion
 
     class Config:
         orm_mode = True
-
-
-class Bird(BaseBird):
-    occurrences: List[BaseOccurrence] = []  # Field(default=[], readOnly=True)  # TODO: infinite recursion
-
-    class Config:
         json_encoders = {
             datetime: lambda dt: dt.replace(
                 microsecond=0, tzinfo=timezone.utc
@@ -143,5 +105,4 @@ class FileResponse(BaseModel):
 
 User.update_forward_refs()
 Occurrence.update_forward_refs()
-BaseBird.update_forward_refs()
 Bird.update_forward_refs()

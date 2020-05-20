@@ -10,7 +10,19 @@ from ..utils import uploadPicture
 
 occurrence_picture_dir = './pictures/occurrence'
 
-def create_occurrence(db: Session, occurrence: schemas.OccurrenceCreate):
+def clean_occurence(occurence: schemas.Occurrence) -> schemas.Occurrence:
+    if (hasattr(occurence.user, "bird_occurrences") and occurence.user.bird_occurrences is not None):
+        occurence.user.bird_occurrences.clear()
+    if (hasattr(occurence.bird, "occurrences") and occurence.bird.occurrences is not None):
+        occurence.bird.occurrences.clear()
+    return occurence
+
+def clean_occurences(occurences: List[schemas.Occurrence]) -> List[schemas.Occurrence]:
+    for oc in occurences:
+        clean_occurence(oc)
+    return occurences
+
+def create_occurrence(db: Session, occurrence: schemas.Occurrence):
     if occurrence.timestamp is None:
         occurrence.timestamp = datetime.now()
 
@@ -25,12 +37,12 @@ def create_occurrence(db: Session, occurrence: schemas.OccurrenceCreate):
     db.add(db_occurrence)
     db.commit()
     db.refresh(db_occurrence)
-    return db_occurrence
+
+    return clean_occurence(db_occurrence)
 
 
 async def add_picture_to_occurrence(db: Session, id: int, picture: UploadFile) -> schemas.Occurrence:
     occurrence = db.query(models.Occurrence).get(id)
-    print(occurrence)
 
     if occurrence is None:
         raise HTTPException(400, "Occurrence with id {} doesn't exist".format(id))
@@ -41,14 +53,16 @@ async def add_picture_to_occurrence(db: Session, id: int, picture: UploadFile) -
     occurrence.picture_url = str(path)
     db.commit()
     db.refresh(occurrence)
-    return occurrence
+
+    return clean_occurence(occurrence)
 
 
 def get_occurrence(db: Session, id: int):
     occurrence = db.query(models.Occurrence).get(id)
     if occurrence is None:
         return HTTPException(404, "Occurrence not found")
-    return occurrence
+
+    return clean_occurence(occurrence)
 
 
 def get_occurrences(
@@ -77,10 +91,10 @@ def get_occurrences(
                              (models.Occurrence.longitude - longitude) * (models.Occurrence.longitude - longitude) <=
                              radius * radius)
 
-    return query.limit(limit).all()
+    return clean_occurences(query.limit(limit).all())
 
 
-def update_occurrence(db: Session, id: int, updated_occurrence: schemas.OccurrenceUpdate) -> models.Occurrence:
+def update_occurrence(db: Session, id: int, updated_occurrence: schemas.Occurrence) -> models.Occurrence:
     occurrence = db.query(models.Occurrence).get(id)
 
     if updated_occurrence.user_id is not None:
@@ -97,12 +111,12 @@ def update_occurrence(db: Session, id: int, updated_occurrence: schemas.Occurren
 
     db.commit()
     db.refresh(occurrence)
-    return occurrence
+    return clean_occurence(occurrence)
 
 
 def delete_occurrence(db: Session, id: int):
     occurrence = db.query(models.Occurrence).get(id)
     db.delete(occurrence)
     db.commit()
-    return occurrence
+    return clean_occurence(occurrence)
 
