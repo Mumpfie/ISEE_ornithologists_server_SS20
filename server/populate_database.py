@@ -51,44 +51,27 @@ if __name__ == "__main__":
 
     # Birds
 
-    birds: pd.DataFrame = pd.read_csv(
-        'server/eu_birds_with_pic_and_shape.csv',
-        usecols = [
-            'Taxon',
-            'Genus',
-            'Order',
-            'Family (Scientific)',
-            'Species (Scientific)',
-            'shape',
-            'Breeding Range',
-            'Breeding Range-Subregion(s)',
-            'picture_url',
-        ]
-    )
-
-    birds.columns = [
-        'taxon',
-        'genus',
-        'order',
-        'family_scientific_name',
-        'species_scientific_name',
-        'shape',
-        'breeding',
-        'subregion',
-        'picture_url'
-    ]
-
-    types= {
-        'taxon': String,
-        'genus': String,
-        'order': String,
-        'family_scientific_name': String,
-        'species_scientific_name': String,
-        'shape': Shape,
-        'breeding': Breeding,
-        'subregion': String,
-        'picture_url': String
+    bird_cols = {
+        'Taxon': 'taxon',
+        'Genus': 'genus',
+        'Order': 'order',
+        'Family (Scientific)': 'family_scientific_name',
+        'Species (Scientific)': 'species_scientific_name',
+        'shape': 'shape',
+        'Breeding Range': 'breeding',
+        'Breeding Range-Subregion(s)': 'subregion',
+        'picture_url': 'picture_url'
     }
 
-    birds.to_sql('bird', engine, if_exists='append', index_label='id') # TODO:, dtype=types)
+    birds: pd.DataFrame = pd.read_csv(
+        'server/eu_birds_with_pic_and_shape.csv',
+        usecols = bird_cols.keys()
+    )
+
+    birds.rename(columns=bird_cols, inplace=True)
+
+    # TODO: implement some kind of ARRAY(ENUM(Breeding)) to handle multiple regions for a bird
+    birds = birds.assign(breeding='eu')
+
+    birds.to_sql('bird', engine, if_exists='append', index_label='id')
 

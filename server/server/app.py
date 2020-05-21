@@ -112,7 +112,7 @@ def delete_user(id: int, db: Session = Depends(get_db)):
 ##################
 
 @app.post("/occurrence", tags=["Occurrence"], response_model=schemas.Occurrence, status_code=201)
-def create_occurrence(occurrence: schemas.OccurrenceCreate, db: Session = Depends(get_db)):
+def create_occurrence(occurrence: schemas.Occurrence, db: Session = Depends(get_db)):
     return occurrenceService.create_occurrence(db, occurrence)
 
 @app.post("/occurrence/{id}", tags=["Occurrence"], response_model=schemas.Occurrence)
@@ -141,7 +141,7 @@ def query_occurrence(
                                              latitude, longitude, radius, limit)
 
 @app.put("/occurrence/{id}", tags=["Occurrence"], response_model=schemas.Occurrence)
-def update_occurrence(id: int, new_prop: schemas.OccurrenceUpdate, db: Session = Depends(get_db)):
+def update_occurrence(id: int, new_prop: schemas.Occurrence, db: Session = Depends(get_db)):
     return occurrenceService.update_occurrence(db, id, new_prop)
 
 @app.delete("/occurrence/{id}", tags=["Occurrence"], response_model=schemas.Occurrence)
