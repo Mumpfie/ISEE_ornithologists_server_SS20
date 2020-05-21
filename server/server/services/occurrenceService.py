@@ -26,11 +26,17 @@ def create_occurrence(db: Session, occurrence: schemas.Occurrence):
     if occurrence.timestamp is None:
         occurrence.timestamp = datetime.now()
 
-    if db.query(models.User).get(occurrence.user_id) is None:
+    user = db.query(models.User).get(occurrence.user_id)
+    if user is None:
         raise HTTPException(400, "User with id {} doesn't exist".format(occurrence.user_id))
+    else:
+        occurrence.user = user
 
-    if db.query(models.Bird).get(occurrence.bird_id) is None:
+    bird = db.query(models.Bird).get(occurrence.bird_id)
+    if bird is None:
         raise HTTPException(400, "Bird with id {} doesn't exist".format(occurrence.bird_id))
+    else:
+        occurrence.bird = bird
 
     db_occurrence = models.Occurrence(**occurrence.dict())
     print(db_occurrence)
@@ -86,7 +92,7 @@ def get_occurrences(
         query = query.filter(models.Occurrence.timestamp >= from_ts)
     if to_ts:
         query = query.filter(models.Occurrence.timestamp <= to_ts)
-    if latitude and longitude and radius:
+    if latitude is not None and longitude is not None and radius is not None:
         query = query.filter((models.Occurrence.latitude - latitude) * (models.Occurrence.latitude - latitude) +
                              (models.Occurrence.longitude - longitude) * (models.Occurrence.longitude - longitude) <=
                              radius * radius)
