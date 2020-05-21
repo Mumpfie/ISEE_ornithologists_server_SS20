@@ -55,15 +55,15 @@ class Bird(BaseModel):
     taxon: str
     genus: str
     order: str
-    authority: str
-    color: Color
-    size: Size
-    shape: Shape
-    breeding: Breeding
+    authority: str = None
+    color: Color = None
+    size: Size = None
+    shape: Shape = None
+    breeding: Breeding = None
     subregion: str = None
     family: Family
     species: Species
-    occurrences: List[Occurrence] = Field(default=[], readOnly=True)  # TODO: infinite recursion
+    occurrences: List[Occurrence] = Field(default=[], readOnly=True)
 
     class Config:
         orm_mode = True
