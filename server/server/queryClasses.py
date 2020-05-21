@@ -16,25 +16,20 @@ class Color(Enum):
 # TODO: think of appropriate size measure
 class Size(Enum):
     random_size = 'random_size'
+    # TODO: drei Größen erstellen
 
 
 # reference: https://identify.whatbird.com/mwg/20/0/1/10/vals.aspx#Values
 class Shape(Enum):
-    chicken_like_marsh = 'Chicken-like-Marsh'
-    duck_like = 'Duck-like'
-    gull_like = 'Gull-like'
-    hawk_like = 'Hawk-like'
-    hummingbird_like = 'Hummingbird-like'
-    long_legged_like = 'Long-legged-like'
-    owl_like = 'Owl-like'
-    perching_like = 'Perching-like'
-    pigeon_like = 'Pigeon-like'
-    sandpiper_like = 'Sandpiper-like'
-    swallow_like = 'Swallow-like'
-    tree_clinging_like = 'Tree-clinging-like'
-    upland_ground_like = 'Upland-ground-like'
-    upright_perching_water_like = 'Upright-perching Water-like'
-
+    sparrow_like = 'sparrow_like'
+    water_bird_like = 'water_bird_like'
+    duck_like = 'duck_like'
+    chicken_like = 'chicken_like'
+    hawk_like = 'hawk_like'
+    owl_like = 'owl_like'
+    long_legged_like = 'long_legged_like'
+    woodpecker_like = 'woodpecker_like'
+    pigeon_like = 'pigeon_like'
 
 # class Region():
 #     '''
