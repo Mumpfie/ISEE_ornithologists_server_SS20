@@ -4,4 +4,1302 @@
     {
       "url": "http://localhost:8000"
     }
-  ],"info":{"title":"Ornithologists REST API","description":"This API provides access to the user and IOC bird data for the Ornithologists app.","version":"1.0.0","x-logo":{"url":"https://fastapi.tiangolo.com/img/logo-margin/logo-teal.png"}},"paths":{"/user":{"get":{"tags":["User"],"summary":"Get Users","operationId":"get_users","parameters":[{"required":false,"schema":{"title":"Name","type":"string"},"name":"name","in":"query"},{"required":false,"schema":{"title":"Skip","type":"integer","default":0},"name":"skip","in":"query"},{"required":false,"schema":{"title":"Limit","type":"integer","default":10},"name":"limit","in":"query"}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"title":"Response Get Users User Get","type":"array","items":{"$ref":"#/components/schemas/User"}}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}},"post":{"tags":["User"],"summary":"Create User","operationId":"create_user","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/User"}}},"required":true},"responses":{"201":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/User"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/user/{id}":{"get":{"tags":["User"],"summary":"Read User","operationId":"get_user","parameters":[{"required":true,"schema":{"title":"Id","type":"integer"},"name":"id","in":"path"}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/User"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}},"put":{"tags":["User"],"summary":"Update User","operationId":"update_user","parameters":[{"required":true,"schema":{"title":"Id","type":"integer"},"name":"id","in":"path"}],"requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/User"}}},"required":true},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/User"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}},"post":{"tags":["User"],"summary":"Add Picture To User","operationId":"add_picture_to_user","parameters":[{"required":true,"schema":{"title":"Id","type":"integer"},"name":"id","in":"path"}],"requestBody":{"content":{"multipart/form-data":{"schema":{"$ref":"#/components/schemas/Body_add_picture_to_user_user__id__post"}}},"required":true},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/User"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}},"delete":{"tags":["User"],"summary":"Delete User","operationId":"delete_user","parameters":[{"required":true,"schema":{"title":"Id","type":"integer"},"name":"id","in":"path"}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/User"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/occurrence":{"get":{"tags":["Occurrence"],"summary":"Query Occurrence","operationId":"query_occurrence_occurrence_get","parameters":[{"required":false,"schema":{"title":"User Id","type":"integer"},"name":"user_id","in":"query"},{"required":false,"schema":{"title":"Bird Id","type":"integer"},"name":"bird_id","in":"query"},{"required":false,"schema":{"title":"Longitude","type":"number"},"name":"longitude","in":"query"},{"required":false,"schema":{"title":"Latitude","type":"number"},"name":"latitude","in":"query"},{"required":false,"schema":{"title":"Radius","type":"number"},"name":"radius","in":"query"}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"title":"Response Query Occurrence Occurrence Get","type":"array","items":{"$ref":"#/components/schemas/Occurrence"}}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}},"post":{"tags":["Occurrence"],"summary":"Create Occurrence","operationId":"create_occurrence_occurrence_post","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/Occurrence"}}},"required":true},"responses":{"201":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/Occurrence"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/occurrence/{id}":{"get":{"tags":["Occurrence"],"summary":"Read Occurrence","operationId":"read_occurrence_occurrence__id__get","parameters":[{"required":true,"schema":{"title":"Id","type":"integer"},"name":"id","in":"path"}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/Occurrence"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}},"put":{"tags":["Occurrence"],"summary":"Update Occurrence","operationId":"update_occurrence_occurrence__id__put","parameters":[{"required":true,"schema":{"title":"Id","type":"integer"},"name":"id","in":"path"}],"requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/Occurrence"}}},"required":true},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/Occurrence"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}},"post":{"tags":["Occurrence"],"summary":"Add Picture To Occurrence","operationId":"add_picture_to_occurrence_occurrence__id__post","parameters":[{"required":true,"schema":{"title":"Id","type":"integer"},"name":"id","in":"path"}],"requestBody":{"content":{"multipart/form-data":{"schema":{"$ref":"#/components/schemas/Body_add_picture_to_occurrence_occurrence__id__post"}}},"required":true},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/Occurrence"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}},"delete":{"tags":["Occurrence"],"summary":"Delete Occurrence","operationId":"delete_occurrence_occurrence__id__delete","parameters":[{"required":true,"schema":{"title":"Id","type":"integer"},"name":"id","in":"path"}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/Occurrence"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/bird/{id}":{"get":{"tags":["Bird"],"summary":"Read Bird","operationId":"read_bird_bird__id__get","parameters":[{"required":true,"schema":{"title":"Id","type":"integer"},"name":"id","in":"path"}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/Bird"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/bird":{"get":{"tags":["Bird"],"summary":"Query Bird","operationId":"query_bird_bird_get","parameters":[{"required":false,"schema":{"title":"Color","enum":["black","grey","white","yellow_brown","red_brown","yellow","olivegreen","blue","orange"]},"name":"color","in":"query"},{"required":false,"schema":{"title":"Size","enum":["random_size"]},"name":"size","in":"query"},{"required":false,"schema":{"title":"Shape","enum":["Chicken-like-Marsh","Duck-like","Gull-like","Hawk-like","Hummingbird-like","Long-legged-like","Owl-like","Perching-like","Pigeon-like","Sandpiper-like","Swallow-like","Tree-clinging-like","Upland-ground-like","Upright-perching Water-like"]},"name":"shape","in":"query"},{"required":false,"schema":{"title":"Breeding","enum":["NA","MA","SA","LA","AF","EU","OR","AU","AO","PO","IO","TrO","TO","NO","SO","AN","So. Cone"]},"name":"breeding","in":"query"}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"title":"Response Query Bird Bird Get","type":"array","items":{"$ref":"#/components/schemas/Bird"}}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/family/{id}":{"get":{"tags":["Family"],"summary":"Read Family","operationId":"read_family_family__id__get","parameters":[{"required":true,"schema":{"title":"Id","type":"integer"},"name":"id","in":"path"}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/Family"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/species/{id}":{"get":{"tags":["Species"],"summary":"Read Species","operationId":"read_species_species__id__get","parameters":[{"required":true,"schema":{"title":"Id","type":"integer"},"name":"id","in":"path"}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/Species"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/files/":{"post":{"tags":["Files"],"summary":"Upload File","operationId":"upload_file_files__post","requestBody":{"content":{"multipart/form-data":{"schema":{"$ref":"#/components/schemas/Body_upload_file_files__post"}}},"required":true},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/FileResponse"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}}},"components":{"schemas":{"Bird":{"title":"Bird","required":["picture_url","taxon","genus","order","authority","color","size","shape","breeding","subregion","family","species"],"type":"object","properties":{"id":{"title":"Id","type":"integer","readOnly":true},"picture_url":{"title":"Picture Url","type":"string"},"taxon":{"title":"Taxon","type":"string"},"genus":{"title":"Genus","type":"string"},"order":{"title":"Order","type":"string"},"authority":{"title":"Authority","type":"string"},"color":{"title":"Color","enum":["black","grey","white","yellow_brown","red_brown","yellow","olivegreen","blue","orange"]},"size":{"title":"Size","enum":["random_size"]},"shape":{"title":"Shape","enum":["Chicken-like-Marsh","Duck-like","Gull-like","Hawk-like","Hummingbird-like","Long-legged-like","Owl-like","Perching-like","Pigeon-like","Sandpiper-like","Swallow-like","Tree-clinging-like","Upland-ground-like","Upright-perching Water-like"]},"breeding":{"title":"Breeding","enum":["NA","MA","SA","LA","AF","EU","OR","AU","AO","PO","IO","TrO","TO","NO","SO","AN","So. Cone"]},"subregion":{"title":"Subregion","type":"string"},"family":{"$ref":"#/components/schemas/Family"},"species":{"$ref":"#/components/schemas/Species"},"occurrences":{"title":"Occurrences","type":"array","items":{"$ref":"#/components/schemas/Occurrence"},"default":[],"readOnly":true}}},"Body_add_picture_to_occurrence_occurrence__id__post":{"title":"Body_add_picture_to_occurrence_occurrence__id__post","required":["picture"],"type":"object","properties":{"picture":{"title":"Picture","type":"string","format":"binary"}}},"Body_add_picture_to_user_user__id__post":{"title":"Body_add_picture_to_user_user__id__post","required":["picture"],"type":"object","properties":{"picture":{"title":"Picture","type":"string","format":"binary"}}},"Body_upload_file_files__post":{"title":"Body_upload_file_files__post","required":["file"],"type":"object","properties":{"file":{"title":"File","type":"string","format":"binary"}}},"Family":{"title":"Family","required":["name_scientific","name_english","name_german"],"type":"object","properties":{"name_scientific":{"title":"Name Scientific","type":"string"},"name_english":{"title":"Name English","type":"string"},"name_german":{"title":"Name German","type":"string"}}},"FileResponse":{"title":"FileResponse","required":["file_url"],"type":"object","properties":{"file_url":{"title":"File Url","type":"string"}}},"HTTPValidationError":{"title":"HTTPValidationError","type":"object","properties":{"detail":{"title":"Detail","type":"array","items":{"$ref":"#/components/schemas/ValidationError"}}}},"Occurrence":{"title":"Occurrence","required":["longitude","latitude","user","bird","user_id","bird_id"],"type":"object","properties":{"id":{"title":"Id","type":"integer","readOnly":true},"timestamp":{"title":"Timestamp","type":"string","format":"date-time"},"note":{"title":"Note","type":"string"},"picture_url":{"title":"Picture Url","type":"string"},"longitude":{"title":"Longitude","type":"number","format":"double"},"latitude":{"title":"Latitude","type":"number","format":"double"},"altitude":{"title":"Altitude","type":"number","format":"double","default":0},"user":{"title":"User","allOf":[{"$ref":"#/components/schemas/User"}],"readOnly":true},"bird":{"title":"Bird","allOf":[{"$ref":"#/components/schemas/Bird"}],"readOnly":true},"user_id":{"title":"User Id","type":"integer"},"bird_id":{"title":"Bird Id","type":"integer"}}},"Species":{"title":"Species","required":["name_scientific","name_english","name_german"],"type":"object","properties":{"name_scientific":{"title":"Name Scientific","type":"string"},"name_english":{"title":"Name English","type":"string"},"name_german":{"title":"Name German","type":"string"}}},"User":{"title":"User","required":["name"],"type":"object","properties":{"id":{"title":"Id","type":"integer","readOnly":true},"picture_url":{"title":"Picture Url","type":"string","readOnly":true},"name":{"title":"Name","type":"string"},"bird_occurrences":{"title":"Bird Occurrences","type":"array","items":{"$ref":"#/components/schemas/Occurrence"},"default":[],"readOnly":true}}},"ValidationError":{"title":"ValidationError","required":["loc","msg","type"],"type":"object","properties":{"loc":{"title":"Location","type":"array","items":{"type":"string"}},"msg":{"title":"Message","type":"string"},"type":{"title":"Error Type","type":"string"}}}}}}
+  ],
+  "info": {
+    "title": "Ornithologists REST API",
+    "description": "This API provides access to the user and IOC bird data for the Ornithologists app.",
+    "version": "1.0.0",
+    "x-logo": {
+      "url": "https://fastapi.tiangolo.com/img/logo-margin/logo-teal.png"
+    }
+  },
+  "paths": {
+    "/user": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Get Users",
+        "operationId": "get_users",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Name",
+              "type": "string"
+            },
+            "name": "name",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Skip",
+              "type": "integer",
+              "default": 0
+            },
+            "name": "skip",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Limit",
+              "type": "integer",
+              "default": 10
+            },
+            "name": "limit",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get Users User Get",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Create User",
+        "operationId": "create_user",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/{id}": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Read User",
+        "operationId": "get_user",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "integer"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Update User",
+        "operationId": "update_user",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "integer"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Add Picture To User",
+        "operationId": "add_picture_to_user",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "integer"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_add_picture_to_user_user__id__post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Delete User",
+        "operationId": "delete_user",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "integer"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/occurrence": {
+      "get": {
+        "tags": [
+          "Occurrence"
+        ],
+        "summary": "Query Occurrence",
+        "operationId": "query_occurrence_occurrence_get",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "User Id",
+              "type": "integer"
+            },
+            "name": "user_id",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Bird Id",
+              "type": "integer"
+            },
+            "name": "bird_id",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "From Ts",
+              "type": "string",
+              "format": "date-time"
+            },
+            "name": "from_ts",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "To Ts",
+              "type": "string",
+              "format": "date-time"
+            },
+            "name": "to_ts",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Longitude",
+              "type": "number"
+            },
+            "name": "longitude",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Latitude",
+              "type": "number"
+            },
+            "name": "latitude",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Radius",
+              "type": "number"
+            },
+            "name": "radius",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Limit",
+              "type": "integer",
+              "default": 20
+            },
+            "name": "limit",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Query Occurrence Occurrence Get",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Occurrence"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Occurrence"
+        ],
+        "summary": "Create Occurrence",
+        "operationId": "create_occurrence_occurrence_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Occurrence"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Occurrence"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/occurrence/{id}": {
+      "get": {
+        "tags": [
+          "Occurrence"
+        ],
+        "summary": "Read Occurrence",
+        "operationId": "read_occurrence_occurrence__id__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "integer"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Occurrence"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Occurrence"
+        ],
+        "summary": "Update Occurrence",
+        "operationId": "update_occurrence_occurrence__id__put",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "integer"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Occurrence"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Occurrence"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Occurrence"
+        ],
+        "summary": "Add Picture To Occurrence",
+        "operationId": "add_picture_to_occurrence_occurrence__id__post",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "integer"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_add_picture_to_occurrence_occurrence__id__post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Occurrence"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Occurrence"
+        ],
+        "summary": "Delete Occurrence",
+        "operationId": "delete_occurrence_occurrence__id__delete",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "integer"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Occurrence"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bird/{id}": {
+      "get": {
+        "tags": [
+          "Bird"
+        ],
+        "summary": "Read Bird",
+        "operationId": "read_bird_bird__id__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Id",
+              "type": "integer"
+            },
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Bird"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bird": {
+      "get": {
+        "tags": [
+          "Bird"
+        ],
+        "summary": "Query Bird",
+        "operationId": "query_bird_bird_get",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Part Name",
+              "type": "string"
+            },
+            "name": "part_name",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Color",
+              "enum": [
+                "black",
+                "grey",
+                "white",
+                "yellow_brown",
+                "red_brown",
+                "yellow",
+                "olivegreen",
+                "blue",
+                "orange"
+              ]
+            },
+            "name": "color",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Size",
+              "enum": [
+                "random_size"
+              ]
+            },
+            "name": "size",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Shape",
+              "enum": [
+                "sparrow_like",
+                "water_bird_like",
+                "duck_like",
+                "chicken_like",
+                "hawk_like",
+                "owl_like",
+                "long_legged_like",
+                "woodpecker_like",
+                "pigeon_like"
+              ]
+            },
+            "name": "shape",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Breeding",
+              "enum": [
+                "NA",
+                "MA",
+                "SA",
+                "LA",
+                "AF",
+                "EU",
+                "OR",
+                "AU",
+                "AO",
+                "PO",
+                "IO",
+                "TrO",
+                "TO",
+                "NO",
+                "SO",
+                "AN",
+                "So. Cone"
+              ]
+            },
+            "name": "breeding",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Skip",
+              "type": "integer",
+              "default": 0
+            },
+            "name": "skip",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Limit",
+              "type": "integer",
+              "default": 20
+            },
+            "name": "limit",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Query Bird Bird Get",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Bird"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/family/{name_scientific}": {
+      "get": {
+        "tags": [
+          "Family"
+        ],
+        "summary": "Read Family",
+        "operationId": "read_family_family__name_scientific__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Name Scientific",
+              "type": "string"
+            },
+            "name": "name_scientific",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Family"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/species/{name_scientific}": {
+      "get": {
+        "tags": [
+          "Species"
+        ],
+        "summary": "Read Species",
+        "operationId": "read_species_species__name_scientific__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Name Scientific",
+              "type": "string"
+            },
+            "name": "name_scientific",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Species"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/files/": {
+      "post": {
+        "tags": [
+          "Files"
+        ],
+        "summary": "Upload File",
+        "operationId": "upload_file_files__post",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_upload_file_files__post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FileResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Bird": {
+        "title": "Bird",
+        "required": [
+          "taxon",
+          "genus",
+          "order",
+          "family",
+          "species"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer",
+            "readOnly": true
+          },
+          "picture_url": {
+            "title": "Picture Url",
+            "type": "string"
+          },
+          "taxon": {
+            "title": "Taxon",
+            "type": "string"
+          },
+          "genus": {
+            "title": "Genus",
+            "type": "string"
+          },
+          "order": {
+            "title": "Order",
+            "type": "string"
+          },
+          "authority": {
+            "title": "Authority",
+            "type": "string"
+          },
+          "color": {
+            "title": "Color",
+            "enum": [
+              "black",
+              "grey",
+              "white",
+              "yellow_brown",
+              "red_brown",
+              "yellow",
+              "olivegreen",
+              "blue",
+              "orange"
+            ]
+          },
+          "size": {
+            "title": "Size",
+            "enum": [
+              "random_size"
+            ]
+          },
+          "shape": {
+            "title": "Shape",
+            "enum": [
+              "sparrow_like",
+              "water_bird_like",
+              "duck_like",
+              "chicken_like",
+              "hawk_like",
+              "owl_like",
+              "long_legged_like",
+              "woodpecker_like",
+              "pigeon_like"
+            ]
+          },
+          "breeding": {
+            "title": "Breeding",
+            "enum": [
+              "NA",
+              "MA",
+              "SA",
+              "LA",
+              "AF",
+              "EU",
+              "OR",
+              "AU",
+              "AO",
+              "PO",
+              "IO",
+              "TrO",
+              "TO",
+              "NO",
+              "SO",
+              "AN",
+              "So. Cone"
+            ]
+          },
+          "subregion": {
+            "title": "Subregion",
+            "type": "string"
+          },
+          "family": {
+            "$ref": "#/components/schemas/Family"
+          },
+          "species": {
+            "$ref": "#/components/schemas/Species"
+          },
+          "occurrences": {
+            "title": "Occurrences",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Occurrence"
+            },
+            "default": [],
+            "readOnly": true
+          }
+        }
+      },
+      "Body_add_picture_to_occurrence_occurrence__id__post": {
+        "title": "Body_add_picture_to_occurrence_occurrence__id__post",
+        "required": [
+          "picture"
+        ],
+        "type": "object",
+        "properties": {
+          "picture": {
+            "title": "Picture",
+            "type": "string",
+            "format": "binary"
+          }
+        }
+      },
+      "Body_add_picture_to_user_user__id__post": {
+        "title": "Body_add_picture_to_user_user__id__post",
+        "required": [
+          "picture"
+        ],
+        "type": "object",
+        "properties": {
+          "picture": {
+            "title": "Picture",
+            "type": "string",
+            "format": "binary"
+          }
+        }
+      },
+      "Body_upload_file_files__post": {
+        "title": "Body_upload_file_files__post",
+        "required": [
+          "file"
+        ],
+        "type": "object",
+        "properties": {
+          "file": {
+            "title": "File",
+            "type": "string",
+            "format": "binary"
+          }
+        }
+      },
+      "Family": {
+        "title": "Family",
+        "required": [
+          "name_scientific"
+        ],
+        "type": "object",
+        "properties": {
+          "name_scientific": {
+            "title": "Name Scientific",
+            "type": "string"
+          },
+          "name_english": {
+            "title": "Name English",
+            "type": "string"
+          },
+          "name_german": {
+            "title": "Name German",
+            "type": "string"
+          }
+        }
+      },
+      "FileResponse": {
+        "title": "FileResponse",
+        "required": [
+          "file_url"
+        ],
+        "type": "object",
+        "properties": {
+          "file_url": {
+            "title": "File Url",
+            "type": "string"
+          }
+        }
+      },
+      "HTTPValidationError": {
+        "title": "HTTPValidationError",
+        "type": "object",
+        "properties": {
+          "detail": {
+            "title": "Detail",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            }
+          }
+        }
+      },
+      "Occurrence": {
+        "title": "Occurrence",
+        "required": [
+          "longitude",
+          "latitude",
+          "user_id",
+          "bird_id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer",
+            "readOnly": true
+          },
+          "timestamp": {
+            "title": "Timestamp",
+            "type": "string",
+            "format": "date-time"
+          },
+          "note": {
+            "title": "Note",
+            "type": "string"
+          },
+          "picture_url": {
+            "title": "Picture Url",
+            "type": "string",
+            "readOnly": true
+          },
+          "longitude": {
+            "title": "Longitude",
+            "type": "number",
+            "format": "double"
+          },
+          "latitude": {
+            "title": "Latitude",
+            "type": "number",
+            "format": "double"
+          },
+          "altitude": {
+            "title": "Altitude",
+            "type": "number",
+            "format": "double",
+            "default": 0
+          },
+          "user": {
+            "title": "User",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/User"
+              }
+            ],
+            "readOnly": true
+          },
+          "bird": {
+            "title": "Bird",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Bird"
+              }
+            ],
+            "readOnly": true
+          },
+          "user_id": {
+            "title": "User Id",
+            "type": "integer"
+          },
+          "bird_id": {
+            "title": "Bird Id",
+            "type": "integer"
+          }
+        }
+      },
+      "Species": {
+        "title": "Species",
+        "required": [
+          "name_scientific"
+        ],
+        "type": "object",
+        "properties": {
+          "name_scientific": {
+            "title": "Name Scientific",
+            "type": "string"
+          },
+          "name_english": {
+            "title": "Name English",
+            "type": "string"
+          },
+          "name_german": {
+            "title": "Name German",
+            "type": "string"
+          }
+        }
+      },
+      "User": {
+        "title": "User",
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer",
+            "readOnly": true
+          },
+          "picture_url": {
+            "title": "Picture Url",
+            "type": "string",
+            "readOnly": true
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "bird_occurrences": {
+            "title": "Bird Occurrences",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Occurrence"
+            },
+            "default": [],
+            "readOnly": true
+          }
+        }
+      },
+      "ValidationError": {
+        "title": "ValidationError",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "loc": {
+            "title": "Location",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "msg": {
+            "title": "Message",
+            "type": "string"
+          },
+          "type": {
+            "title": "Error Type",
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

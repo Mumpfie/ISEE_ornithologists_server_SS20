@@ -1,3 +1,4 @@
+import os
 from typing import List
 from pathlib import Path
 
@@ -66,7 +67,13 @@ def update_user(db: Session, id: int, new_prop: schemas.User) -> schemas.User:
 
 
 def delete_user(db: Session, id: int) -> schemas.User:
-    user = db.query(models.User).get(id)
+    user: models.User = db.query(models.User).get(id)
+
+    if user.picture_url is not None:
+        pic_path: Path = Path(user.picture_url)
+        if pic_path.exists():
+            os.remove(pic_path)
+
     db.delete(user)
     db.commit()
     return clean_user(user)

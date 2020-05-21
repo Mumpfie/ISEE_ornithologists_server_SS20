@@ -33,8 +33,8 @@ class Occurrence(BaseModel):
     longitude: float = Field(format="double")
     latitude: float = Field(format="double")
     altitude: float = Field(default=0, format="double")
-    user: User = Field(default=None, readOnly=True)  # TODO: value still required
-    bird: Bird = Field(default=None, readOnly=True)  # TODO: value still required
+    user: User = Field(default=None, readOnly=True)
+    bird: Bird = Field(default=None, readOnly=True)
     user_id: int
     bird_id: int
 

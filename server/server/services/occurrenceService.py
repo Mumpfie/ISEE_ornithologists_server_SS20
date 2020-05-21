@@ -1,3 +1,4 @@
+import os
 from typing import List
 from pathlib import Path
 from datetime import datetime
@@ -121,7 +122,13 @@ def update_occurrence(db: Session, id: int, updated_occurrence: schemas.Occurren
 
 
 def delete_occurrence(db: Session, id: int):
-    occurrence = db.query(models.Occurrence).get(id)
+    occurrence: models.Occurrence = db.query(models.Occurrence).get(id)
+
+    if occurrence.picture_url is not None:
+        pic_path: Path = Path(occurrence.picture_url)
+        if pic_path.exists():
+            os.remove(pic_path)
+
     db.delete(occurrence)
     db.commit()
     return clean_occurence(occurrence)
