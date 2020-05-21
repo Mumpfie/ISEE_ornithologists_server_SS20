@@ -9,18 +9,21 @@ from .queryClasses import Color, Size, Shape, Breeding
 
 # User
 
-class User(BaseModel):
+class UserBase(BaseModel):
     id: int = Field(default=None, readOnly=True)
     picture_url: str = Field(default=None, readOnly=True)
     name: str
-    bird_occurrences: List[Occurrence] = Field(default=[], readOnly=True)
+
+    class Config:
+        orm_mode = True
+
+class User(UserBase):
+    bird_occurrences: List[Occurrence] = Field(default=[], readOnly=True, nullable=False)
 
     class Config:
         orm_mode = True
         json_encoders = {
-            datetime: lambda dt: dt.replace(
-                microsecond=0, tzinfo=timezone.utc
-            ).isoformat()
+            datetime: lambda dt: dt.replace(tzinfo=timezone.utc).isoformat()
         }
 
 # Occurrence
@@ -33,23 +36,21 @@ class Occurrence(BaseModel):
     longitude: float = Field(format="double")
     latitude: float = Field(format="double")
     altitude: float = Field(default=0, format="double")
-    user: User = Field(default=None, readOnly=True)
-    bird: Bird = Field(default=None, readOnly=True)
+    user: UserBase = Field(default=None, readOnly=True)
+    bird: BirdBase = Field(default=None, readOnly=True)
     user_id: int
     bird_id: int
 
     class Config:
         orm_mode = True
         json_encoders = {
-            datetime: lambda dt: dt.replace(
-                microsecond=0, tzinfo=timezone.utc
-            ).isoformat()
+            datetime: lambda dt: dt.replace(tzinfo=timezone.utc).isoformat()
         }
 
 
 # Bird
 
-class Bird(BaseModel):
+class BirdBase(BaseModel):
     id: int = Field(default=None, readOnly=True)
     picture_url: str = None
     taxon: str
@@ -63,14 +64,17 @@ class Bird(BaseModel):
     subregion: str = None
     family: Family
     species: Species
-    occurrences: List[Occurrence] = Field(default=[], readOnly=True)
+
+    class Config:
+        orm_mode = True
+
+class Bird(BirdBase):
+    occurrences: List[Occurrence] = Field(default=[], readOnly=True, nullable=False)
 
     class Config:
         orm_mode = True
         json_encoders = {
-            datetime: lambda dt: dt.replace(
-                microsecond=0, tzinfo=timezone.utc
-            ).isoformat()
+            datetime: lambda dt: dt.replace(tzinfo=timezone.utc).isoformat()
         }
 
 
@@ -104,5 +108,7 @@ class FileResponse(BaseModel):
 
 
 User.update_forward_refs()
+UserBase.update_forward_refs()
 Occurrence.update_forward_refs()
 Bird.update_forward_refs()
+BirdBase.update_forward_refs()

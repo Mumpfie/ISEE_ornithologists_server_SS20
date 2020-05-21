@@ -14,6 +14,7 @@ from . import schemas, models
 from .services import userService, occurrenceService, birdService, familyService, speciesService
 from .queryClasses import Color, Size, Shape, Breeding
 from .utils import uploadPicture
+from fastapi.middleware.gzip import GZipMiddleware
 
 picture_dir = './pictures'
 bird_picture_dir = './pictures/birds'
@@ -43,27 +44,7 @@ def custom_openapi():
 
 app.openapi = custom_openapi
 
-class GzipRequest(Request):
-    async def body(self) -> bytes:
-        if not hasattr(self, "_body"):
-            body = await super().body()
-            if "gzip" in self.headers.getlist("Content-Encoding"):
-                body = gzip.decompress(body)
-            self._body = body
-        return self._body
-
-
-class GzipRoute(APIRoute):
-    def get_route_handler(self) -> Callable:
-        original_route_handler = super().get_route_handler()
-
-        async def custom_route_handler(request: Request) -> Response:
-            request = GzipRequest(request.scope, request.receive)
-            return await original_route_handler(request)
-
-        return custom_route_handler
-
-app.router.route_class = GzipRoute
+app.add_middleware(GZipMiddleware, minimum_size=200)
 
 app.mount("/pictures", StaticFiles(directory="pictures"), name="pictures")
 
@@ -111,27 +92,27 @@ def delete_user(id: int, db: Session = Depends(get_db)):
 # Occurrence
 ##################
 
-@app.post("/occurrence", tags=["Occurrence"], response_model=schemas.Occurrence, status_code=201)
+@app.post("/occurrence", tags=["Occurrence"], operation_id='add_occurrence', response_model=schemas.Occurrence, status_code=201)
 def create_occurrence(occurrence: schemas.Occurrence, db: Session = Depends(get_db)):
     return occurrenceService.create_occurrence(db, occurrence)
 
-@app.post("/occurrence/{id}", tags=["Occurrence"], response_model=schemas.Occurrence)
+@app.post("/occurrence/{id}", tags=["Occurrence"], operation_id='add_picture_to_occurrence', response_model=schemas.Occurrence)
 async def add_picture_to_occurrence(id: int, picture: UploadFile = File(...), db: Session = Depends(get_db)):
     return await occurrenceService.add_picture_to_occurrence(db, id, picture)
 
 
-@app.get("/occurrence/{id}", tags=["Occurrence"], response_model=schemas.Occurrence)
+@app.get("/occurrence/{id}", tags=["Occurrence"], operation_id='get_occurrence', response_model=schemas.Occurrence)
 def read_occurrence(id: int, db: Session = Depends(get_db)):
     return occurrenceService.get_occurrence(db, id)
 
 
-@app.get("/occurrence", tags=["Occurrence"], response_model=List[schemas.Occurrence])
+@app.get("/occurrence", tags=["Occurrence"], operation_id='get_occurrences', response_model=List[schemas.Occurrence])
 def query_occurrence(
         user_id: int = None,
         bird_id: int = None,
         from_ts: datetime = None,
         to_ts: datetime = None,
-        longitude: float = None,
+        longitude: float = None, # Todo Format double angeben
         latitude: float = None,
         radius: float = None,
         limit: int = 20,
@@ -140,11 +121,11 @@ def query_occurrence(
     return occurrenceService.get_occurrences(db, user_id, bird_id, from_ts, to_ts,
                                              latitude, longitude, radius, limit)
 
-@app.put("/occurrence/{id}", tags=["Occurrence"], response_model=schemas.Occurrence)
+@app.put("/occurrence/{id}", tags=["Occurrence"], operation_id='update_occurrence', response_model=schemas.Occurrence)
 def update_occurrence(id: int, new_prop: schemas.Occurrence, db: Session = Depends(get_db)):
     return occurrenceService.update_occurrence(db, id, new_prop)
 
-@app.delete("/occurrence/{id}", tags=["Occurrence"], response_model=schemas.Occurrence)
+@app.delete("/occurrence/{id}", tags=["Occurrence"], operation_id='delete_occurrence', response_model=schemas.Occurrence)
 def delete_occurrence(id: int, db: Session = Depends(get_db)):
     return occurrenceService.delete_occurrence(db, id)
 
@@ -153,11 +134,11 @@ def delete_occurrence(id: int, db: Session = Depends(get_db)):
 # Bird
 ##################
 
-@app.get("/bird/{id}", tags=["Bird"], response_model=schemas.Bird)
+@app.get("/bird/{id}", tags=["Bird"], operation_id='get_bird', response_model=schemas.Bird)
 def read_bird(id: int, db: Session = Depends(get_db)):
     return birdService.get_bird(db, id)
 
-@app.get("/bird", tags=["Bird"], response_model=List[schemas.Bird])
+@app.get("/bird", tags=["Bird"], operation_id='get_birds', response_model=List[schemas.Bird])
 def query_bird(
         part_name: str = None,
         color: Color = None,
@@ -174,7 +155,7 @@ def query_bird(
 # Family
 ##################
 
-@app.get("/family/{name_scientific}", tags=["Family"], response_model=schemas.Family)
+@app.get("/family/{name_scientific}", tags=["Family"], operation_id='get_family_by_name', response_model=schemas.Family)
 def read_family(name_scientific: str, db: Session = Depends(get_db)):
     return familyService.get_families(db, name_scientific)
 
@@ -182,18 +163,6 @@ def read_family(name_scientific: str, db: Session = Depends(get_db)):
 # Species
 ##################
 
-@app.get("/species/{name_scientific}", tags=["Species"], response_model=schemas.Species)
+@app.get("/species/{name_scientific}", tags=["Species"], operation_id='get_species_by_name', response_model=schemas.Species)
 def read_species(name_scientific: str, db: Session = Depends(get_db)):
     return speciesService.get_species(db, name_scientific)
-
-##################
-# Files
-##################
-
-@app.post("/files/", tags=["Files"], response_model=schemas.FileResponse)
-async def upload_file(file: UploadFile = File(...)):
-    path = Path(picture_dir, file.filename)
-    await uploadPicture(file, path)
-    response : schemas.FileResponse = schemas.FileResponse.construct()
-    response.file_url = file.filename
-    return response

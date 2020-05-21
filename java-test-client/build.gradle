@@ -10,14 +10,19 @@ repositories {
     mavenCentral()
 }
 
+test {
+    useJUnitPlatform()
+}
+
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'io.gsonfire:gson-fire:1.0.1'
     implementation 'io.swagger:swagger-annotations:1.6.1'
     implementation 'com.google.code.findbugs:jsr305:3.0.2'
-    implementation "com.squareup.okhttp3:okhttp:4.6.0"
-    implementation "com.squareup.okhttp3:logging-interceptor:4.6.0"
+    implementation "com.squareup.okhttp3:okhttp:3.14.9"
+    implementation "com.squareup.okhttp3:logging-interceptor:3.14.9"
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.6.2'
 }
 
 openApiValidate {
@@ -37,8 +42,19 @@ openApiGenerate {
             java8                  : "true",
             serializableModel      : "true",
             serializationLibrary   : "gson",
-            useGzipFeature         : "true",
+            useGzipFeature         : "false",
             hideGenerationTimestamp: "true"
+            //FOR ANDROID: parcelableModel        : "true"
+    ]
+    importMappings = [
+            UserBase: "org.example.test.model.User",
+            BirdBase: "org.example.test.model.Bird",
+
+    ]
+    instantiationTypes = [
+            occurrences: "ArrayList",
+            BirdBase: "org.example.test.model.Bird",
+
     ]
     systemProperties = [
             modelTests     : "false",

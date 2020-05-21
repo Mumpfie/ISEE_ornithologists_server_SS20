@@ -1,39 +1,30 @@
 import os
 from typing import List
 from pathlib import Path
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy.orm import Session
 from fastapi import UploadFile, HTTPException
 
+from .userService import get_users, get_user
 from .. import models, schemas
 from ..utils import uploadPicture
 
 occurrence_picture_dir = './pictures/occurrence'
 
-def clean_occurence(occurence: schemas.Occurrence) -> schemas.Occurrence:
-    if (hasattr(occurence.user, "bird_occurrences") and occurence.user.bird_occurrences is not None):
-        occurence.user.bird_occurrences.clear()
-    if (hasattr(occurence.bird, "occurrences") and occurence.bird.occurrences is not None):
-        occurence.bird.occurrences.clear()
-    return occurence
-
-def clean_occurences(occurences: List[schemas.Occurrence]) -> List[schemas.Occurrence]:
-    for oc in occurences:
-        clean_occurence(oc)
-    return occurences
-
 def create_occurrence(db: Session, occurrence: schemas.Occurrence):
     if occurrence.timestamp is None:
-        occurrence.timestamp = datetime.now()
+        occurrence.timestamp = datetime.utcnow()
+    else:
+        occurrence.timestamp = occurrence.timestamp.astimezone(timezone.utc)
 
-    user = db.query(models.User).get(occurrence.user_id)
+    user : schemas.User = db.query(models.User).get(occurrence.user_id)
     if user is None:
         raise HTTPException(400, "User with id {} doesn't exist".format(occurrence.user_id))
     else:
         occurrence.user = user
 
-    bird = db.query(models.Bird).get(occurrence.bird_id)
+    bird : schemas.Bird = db.query(models.Bird).get(occurrence.bird_id)
     if bird is None:
         raise HTTPException(400, "Bird with id {} doesn't exist".format(occurrence.bird_id))
     else:
@@ -44,15 +35,14 @@ def create_occurrence(db: Session, occurrence: schemas.Occurrence):
     db.add(db_occurrence)
     db.commit()
     db.refresh(db_occurrence)
-
-    return clean_occurence(db_occurrence)
+    return db_occurrence
 
 
 async def add_picture_to_occurrence(db: Session, id: int, picture: UploadFile) -> schemas.Occurrence:
     occurrence = db.query(models.Occurrence).get(id)
 
     if occurrence is None:
-        raise HTTPException(400, "Occurrence with id {} doesn't exist".format(id))
+        raise HTTPException(422, "Occurrence with id {} doesn't exist".format(id))
 
     path = Path(occurrence_picture_dir, str(occurrence.id) + '.jpeg')
     path = await uploadPicture(picture, path, override=True)
@@ -60,8 +50,7 @@ async def add_picture_to_occurrence(db: Session, id: int, picture: UploadFile) -
     occurrence.picture_url = str(path)
     db.commit()
     db.refresh(occurrence)
-
-    return clean_occurence(occurrence)
+    return occurrence
 
 
 def get_occurrence(db: Session, id: int):
@@ -69,7 +58,7 @@ def get_occurrence(db: Session, id: int):
     if occurrence is None:
         return HTTPException(404, "Occurrence not found")
 
-    return clean_occurence(occurrence)
+    return occurrence
 
 
 def get_occurrences(
@@ -98,7 +87,7 @@ def get_occurrences(
                              (models.Occurrence.longitude - longitude) * (models.Occurrence.longitude - longitude) <=
                              radius * radius)
 
-    return clean_occurences(query.limit(limit).all())
+    return query.limit(limit).all()
 
 
 def update_occurrence(db: Session, id: int, updated_occurrence: schemas.Occurrence) -> models.Occurrence:
@@ -113,12 +102,12 @@ def update_occurrence(db: Session, id: int, updated_occurrence: schemas.Occurren
             raise HTTPException(400, "Bird with id {} doesn't exist".format(updated_occurrence.bird_id))
 
     new_prop = updated_occurrence.dict(exclude_unset=True)
-    for key, value in new_prop.items():
+    for key, value in new_prop.items(): # TODO hier crasht der Bums gerade. Diese ungetypten Sachen und Dicts sind immer die Quelle aller Freude beim Debuggen.
         setattr(occurrence, key, value)
 
     db.commit()
     db.refresh(occurrence)
-    return clean_occurence(occurrence)
+    return occurrence
 
 
 def delete_occurrence(db: Session, id: int):
@@ -131,5 +120,5 @@ def delete_occurrence(db: Session, id: int):
 
     db.delete(occurrence)
     db.commit()
-    return clean_occurence(occurrence)
+    return occurrence
 
