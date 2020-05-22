@@ -56,7 +56,7 @@ async def add_picture_to_occurrence(db: Session, id: int, picture: UploadFile) -
 def get_occurrence(db: Session, id: int):
     occurrence = db.query(models.Occurrence).get(id)
     if occurrence is None:
-        return HTTPException(404, "Occurrence not found")
+        raise HTTPException(404, "Occurrence not found")
 
     return occurrence
 
@@ -73,6 +73,11 @@ def get_occurrences(
         limit: int = 20
 ) -> List[schemas.Occurrence]:
     query = db.query(models.Occurrence)
+
+    if (latitude is None or longitude is None or radius is None ) and\
+            (latitude is not None or longitude is not None or radius is not None):
+        raise HTTPException(400, "All of latitude, longitude and radius have to be defined or none of them")
+
 
     if user_id:
         query = query.filter(models.Occurrence.user_id == user_id)
