@@ -3,7 +3,7 @@ from typing import List, Dict, Callable
 from pathlib import Path
 from datetime import datetime
 
-from fastapi import FastAPI, Depends, HTTPException, File, UploadFile, Request, Response
+from fastapi import FastAPI, Depends, HTTPException, File, UploadFile, Request, Response, Query
 from fastapi.openapi.utils import get_openapi
 from fastapi.routing import APIRoute
 from fastapi.staticfiles import StaticFiles
@@ -112,9 +112,9 @@ def query_occurrence(
         bird_id: int = None,
         from_ts: datetime = None,
         to_ts: datetime = None,
-        longitude: float = None, # Todo Format double angeben
-        latitude: float = None,
-        radius: float = None,
+        longitude: float = Query(None, format="double"),
+        latitude: float = Query(None, format="double"),
+        radius: float = Query(None, format="double"),
         limit: int = 20,
         db: Session = Depends(get_db)
 ):
