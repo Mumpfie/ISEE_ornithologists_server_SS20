@@ -12,7 +12,7 @@ if __name__ == "__main__":
     # Families
 
     families: pd.DataFrame = pd.read_csv(
-        'server/eu_birds_with_pic_and_shape.csv',
+        'eu_birds_with_pic_and_shape.csv',
         usecols=[
             'Family (Scientific)',
             'Family (English)'
@@ -33,7 +33,7 @@ if __name__ == "__main__":
     # Species
 
     species: pd.DataFrame = pd.read_csv(
-        'server/eu_birds_with_pic_and_shape.csv',
+        'eu_birds_with_pic_and_shape.csv',
         usecols=[
             'Species (Scientific)',
             'Species (English)'
@@ -64,7 +64,7 @@ if __name__ == "__main__":
     }
 
     birds: pd.DataFrame = pd.read_csv(
-        'server/eu_birds_with_pic_and_shape.csv',
+        'eu_birds_with_pic_and_shape.csv',
         usecols = bird_cols.keys()
     )
 
