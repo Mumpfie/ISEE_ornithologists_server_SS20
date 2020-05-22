@@ -96,7 +96,69 @@ public class OccurrenceTest {
     @Test
     @Order(4)
     public void queryOccurenceTest() throws ApiException {
-        // Todo
+
+        User user = userApi.getUsers("test", null, null).get(0);
+        occurrenceApi.addOccurrence(
+                new Occurrence()
+                    .userId(user.getId())
+                    .birdId(123)
+                    .latitude(1234.0)
+                    .longitude(4321.0)
+        );
+
+        List<Occurrence> queryOccurrences = occurrenceApi.getOccurrences(
+                user.getId(),
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+
+        assertEquals("test", queryOccurrences.get(0).getUser().getName() );
+
+        queryOccurrences = occurrenceApi.getOccurrences(
+                null,
+                123,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+
+        assertEquals(123, queryOccurrences.get(0).getBird().getId() );
+
+        queryOccurrences = occurrenceApi.getOccurrences(
+                null,
+                null,
+                null,
+                OffsetDateTime.now(),
+                null,
+                null,
+                null,
+                null
+        );
+
+        assertNotNull(queryOccurrences.get(0));
+
+        queryOccurrences = occurrenceApi.getOccurrences(
+                null,
+                null,
+                null,
+                null,
+                4311.0,
+                1224.0,
+                100.0,
+                null
+        );
+
+        assertEquals("test", queryOccurrences.get(0).getUser().getName() );
+
+        assertThrows(ApiException.class, () -> occurrenceApi.getOccurrences(null,null,null,null,123.0,null,null,null));
     }
 
     @Test
