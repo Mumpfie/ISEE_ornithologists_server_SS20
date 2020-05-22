@@ -2,7 +2,7 @@ from typing import List
 
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
-from .. import models, schemas
+from ..model import models, schemas
 
 
 def get_families(db: Session, name_scientific: str) -> List[schemas.Family]:

@@ -5,8 +5,8 @@ from pathlib import Path
 from sqlalchemy.orm import Session
 from fastapi import UploadFile, HTTPException
 
-from .. import models, schemas
-from ..utils import uploadPicture
+from ..model import models, schemas
+from app.util.utils import uploadPicture
 
 user_picture_dir = '/pictures/user'
 

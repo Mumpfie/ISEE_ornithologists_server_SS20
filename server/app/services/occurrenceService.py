@@ -6,9 +6,8 @@ from datetime import datetime, timezone
 from sqlalchemy.orm import Session
 from fastapi import UploadFile, HTTPException
 
-from .userService import get_users, get_user
-from .. import models, schemas
-from ..utils import uploadPicture
+from ..model import models, schemas
+from app.util.utils import uploadPicture
 
 occurrence_picture_dir = '/pictures/occurrence'
 
