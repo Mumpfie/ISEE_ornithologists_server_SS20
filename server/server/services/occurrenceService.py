@@ -10,7 +10,7 @@ from .userService import get_users, get_user
 from .. import models, schemas
 from ..utils import uploadPicture
 
-occurrence_picture_dir = './pictures/occurrence'
+occurrence_picture_dir = '/pictures/occurrence'
 
 def create_occurrence(db: Session, occurrence: schemas.Occurrence):
     if occurrence.timestamp is None:

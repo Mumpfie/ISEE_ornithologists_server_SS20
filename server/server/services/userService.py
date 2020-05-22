@@ -8,7 +8,7 @@ from fastapi import UploadFile, HTTPException
 from .. import models, schemas
 from ..utils import uploadPicture
 
-user_picture_dir = './pictures/user'
+user_picture_dir = '/pictures/user'
 
 def create_user(db: Session, user: schemas.User) -> schemas.User:
     if get_users(db, user.name):

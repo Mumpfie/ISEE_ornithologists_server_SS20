@@ -16,8 +16,7 @@ from .queryClasses import Color, Size, Shape, Breeding
 from .utils import uploadPicture
 from fastapi.middleware.gzip import GZipMiddleware
 
-picture_dir = './pictures'
-bird_picture_dir = './pictures/birds'
+picture_dir = '/pictures'
 
 models.Base.metadata.create_all(bind=engine)
 
