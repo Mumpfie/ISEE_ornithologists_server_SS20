@@ -91,18 +91,24 @@ def get_occurrences(
 
 
 def update_occurrence(db: Session, id: int, updated_occurrence: schemas.Occurrence) -> models.Occurrence:
-    occurrence = db.query(models.Occurrence).get(id)
+    occurrence: models.Occurrence = db.query(models.Occurrence).get(id)
 
     if updated_occurrence.user_id is not None:
-        if db.query(models.User).get(updated_occurrence.user_id) is None:
+        new_user: models.User = db.query(models.User).get(updated_occurrence.user_id)
+        if new_user is None:
             raise HTTPException(400, "User with id {} doesn't exist".format(updated_occurrence.user_id))
+        else:
+            updated_occurrence.user = new_user
 
     if updated_occurrence.bird_id is not None:
-        if db.query(models.Bird).get(updated_occurrence.bird_id) is None:
+        new_bird: models.Bird = db.query(models.Bird).get(updated_occurrence.bird_id)
+        if new_bird is None:
             raise HTTPException(400, "Bird with id {} doesn't exist".format(updated_occurrence.bird_id))
+        else:
+            updated_occurrence.bird = new_bird
 
-    new_prop = updated_occurrence.dict(exclude_unset=True)
-    for key, value in new_prop.items(): # TODO hier crasht der Bums gerade. Diese ungetypten Sachen und Dicts sind immer die Quelle aller Freude beim Debuggen.
+    new_prop = updated_occurrence.dict()
+    for key, value in new_prop.items():
         setattr(occurrence, key, value)
 
     db.commit()
