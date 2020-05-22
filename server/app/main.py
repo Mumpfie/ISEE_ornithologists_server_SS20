@@ -4,15 +4,15 @@ from datetime import datetime
 from fastapi import FastAPI, Depends, File, UploadFile, Query
 from fastapi.openapi.utils import get_openapi
 from fastapi.staticfiles import StaticFiles
-from sqlalchemy.orm import Session
-
-from app.database.database import SessionLocal, engine
-from app.model import models, schemas
-from app.services import userService, occurrenceService, birdService, familyService, speciesService
-from app.model.queryClasses import Color, Size, Shape, Breeding
 from fastapi.middleware.gzip import GZipMiddleware
 
-picture_dir = '/pictures'
+from sqlalchemy.orm import Session
+
+from config.config import SessionLocal, engine
+from model import models, schemas
+from services import userService, occurrenceService, birdService, familyService, speciesService
+from model.queryClasses import Color, Size, Shape, Breeding
+from config.config import picture_dir
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -41,7 +41,7 @@ app.openapi = custom_openapi
 
 app.add_middleware(GZipMiddleware, minimum_size=200)
 
-app.mount("/pictures", StaticFiles(directory="pictures"), name="pictures")
+app.mount(picture_dir, StaticFiles(directory=picture_dir), name="pictures")
 
 
 # Dependency

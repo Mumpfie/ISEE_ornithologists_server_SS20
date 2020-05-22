@@ -3,9 +3,9 @@ from typing import List
 from sqlalchemy.orm import Session
 
 from .occurrenceService import get_occurrences
-from app.model.queryClasses import Color, Shape, Size, Breeding
+from model.queryClasses import Color, Shape, Size, Breeding
 from fastapi import HTTPException
-from ..model import models, schemas
+from model import models, schemas
 
 
 def get_birds(

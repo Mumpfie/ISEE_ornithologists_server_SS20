@@ -2,7 +2,7 @@ from typing import List
 
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
-from ..model import models, schemas
+from model import models, schemas
 
 
 def get_species(db: Session, name_scientific: str) -> List[schemas.Species]:

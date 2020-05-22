@@ -1,5 +1,5 @@
 FROM tiangolo/uvicorn-gunicorn-fastapi:python3.8
 
-COPY ./app /app
+RUN python -m pip --no-cache-dir install aiofiles python-multipart sqlalchemy psycopg2 && mkdir /pictures
 
-RUN pip --no-cache-dir install aiofiles python-multipart sqlalchemy
+COPY . /app

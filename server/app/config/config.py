@@ -2,12 +2,13 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-SQLALCHEMY_DATABASE_URL = "sqlite:///./sql_app.db"
-# SQLALCHEMY_DATABASE_URL = "mysql//username:password@app:port/database"
+#SQLALCHEMY_DATABASE_URL = "sqlite:///./sql_app.db"
+SQLALCHEMY_DATABASE_URL = "postgresql://ornithologists:27Zo4~sl@host.docker.internal:5432/ornithologists_api"
+
+picture_dir = '/pictures'
 
 engine = create_engine(
-    SQLALCHEMY_DATABASE_URL ,
-    connect_args={"check_same_thread": False} # TODO: only needed for mysql
+    SQLALCHEMY_DATABASE_URL
 )
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 

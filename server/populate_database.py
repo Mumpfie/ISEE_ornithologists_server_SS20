@@ -1,6 +1,6 @@
 import pandas as pd
 
-from app.database.database import engine
+from app.config.config import engine
 from app.model import models
 
 if __name__ == "__main__":

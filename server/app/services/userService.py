@@ -5,10 +5,12 @@ from pathlib import Path
 from sqlalchemy.orm import Session
 from fastapi import UploadFile, HTTPException
 
-from ..model import models, schemas
-from app.util.utils import uploadPicture
+from model import models, schemas
+from util.utils import uploadPicture
 
-user_picture_dir = '/pictures/user'
+from config.config import picture_dir
+
+user_picture_dir = picture_dir + '/user'
 
 def create_user(db: Session, user: schemas.User) -> schemas.User:
     if get_users(db, user.name):
