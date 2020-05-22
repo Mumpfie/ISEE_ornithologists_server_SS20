@@ -61,6 +61,7 @@ def delete_user(db: Session, id: int) -> schemas.User:
         if pic_path.exists():
             os.remove(pic_path)
 
+    db.query(models.Occurrence).filter(models.Occurrence.user_id == id).delete()
     db.delete(user)
     db.commit()
     return user
