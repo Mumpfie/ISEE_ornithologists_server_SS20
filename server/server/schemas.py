@@ -56,12 +56,12 @@ class BirdBase(BaseModel):
     taxon: str = Field(max_length=25)
     genus: str = Field(max_length=25)
     order: str = Field(max_length=25)
-    authority: str = Field(default=None, max_length=25)
+    authority: str = Field(default=None, max_length=40)
     color: Color = None
     size: Size = None
     shape: Shape = None
     breeding: Breeding = None
-    subregion: str = Field(max_length=25)
+    subregion: str = Field(max_length=150)
     family: Family
     species: Species
 
