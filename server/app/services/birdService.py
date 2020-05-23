@@ -21,7 +21,7 @@ def get_birds(
     query = db.query(models.Bird)
 
     if part_name is not None:
-        query = query.filter(models.Species.name_english.contains(part_name))
+        query = query.filter(models.Bird.species.has(models.Species.name_english.contains(part_name)))
     if color is not None:
         query = query.filter(models.Bird.color == color)
     if size is not None:
