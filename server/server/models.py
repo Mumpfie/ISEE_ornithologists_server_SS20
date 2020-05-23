@@ -60,8 +60,8 @@ class Family(Base):
     __tablename__ = "family"
 
     name_scientific = Column(String(25), primary_key=True)
-    name_english = Column(String(25))
-    name_german = Column(String(25))
+    name_english = Column(String(50))
+    name_german = Column(String(50))
     birds = relationship('Bird', backref='family')
 
     def __repr__(self):
@@ -72,8 +72,8 @@ class Species(Base):
     __tablename__ = "species"
 
     name_scientific = Column(String(25), primary_key=True)
-    name_english = Column(String(25))
-    name_german = Column(String(25))
+    name_english = Column(String(50))
+    name_german = Column(String(50))
     birds = relationship('Bird', backref='species')
 
     def __repr__(self):
