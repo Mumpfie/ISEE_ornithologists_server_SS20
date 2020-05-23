@@ -11,8 +11,8 @@ from .queryClasses import Color, Size, Shape, Breeding
 
 class UserBase(BaseModel):
     id: int = Field(default=None, readOnly=True)
-    picture_url: str = Field(default=None, readOnly=True)
-    name: str
+    picture_url: str = Field(default=None, readOnly=True, max_length=100)
+    name: str = Field(max_length=25)
 
     class Config:
         orm_mode = True
@@ -32,10 +32,10 @@ class Occurrence(BaseModel):
     id: int = Field(default=None, readOnly=True)
     timestamp: datetime = None
     note: str = None
-    picture_url: str = Field(default=None, readOnly=True)
-    longitude: float = Field(format="double")
-    latitude: float = Field(format="double")
-    altitude: float = Field(default=0, format="double")
+    picture_url: str = Field(default=None, readOnly=True, max_length=100)
+    longitude: float = Field(format="double", ge=-180, le=180)
+    latitude: float = Field(format="double", ge=-90, le=90)
+    altitude: float = Field(default=0, format="double", ge=0, le=10000)
     user: UserBase = Field(default=None, readOnly=True)
     bird: BirdBase = Field(default=None, readOnly=True)
     user_id: int
@@ -52,16 +52,16 @@ class Occurrence(BaseModel):
 
 class BirdBase(BaseModel):
     id: int = Field(default=None, readOnly=True)
-    picture_url: str = None
-    taxon: str
-    genus: str
-    order: str
-    authority: str = None
+    picture_url: str = Field(default=None, max_length=100)
+    taxon: str = Field(max_length=25)
+    genus: str = Field(max_length=25)
+    order: str = Field(max_length=25)
+    authority: str = Field(default=None, max_length=25)
     color: Color = None
     size: Size = None
     shape: Shape = None
     breeding: Breeding = None
-    subregion: str = None
+    subregion: str = Field(max_length=25)
     family: Family
     species: Species
 
