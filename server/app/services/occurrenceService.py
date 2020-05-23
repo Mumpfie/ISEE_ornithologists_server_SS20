@@ -6,11 +6,12 @@ from datetime import datetime, timezone
 from sqlalchemy.orm import Session
 from fastapi import UploadFile, HTTPException
 
-from .userService import get_users, get_user
-from .. import models, schemas
-from ..utils import uploadPicture
+from model import models, schemas
+from util.utils import uploadPicture
 
-occurrence_picture_dir = '/pictures/occurrence'
+from config.config import picture_dir
+
+occurrence_picture_dir = picture_dir + '/occurrence'
 
 def create_occurrence(db: Session, occurrence: schemas.Occurrence):
     if occurrence.timestamp is None:

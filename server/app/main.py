@@ -1,22 +1,18 @@
-import gzip
-from typing import List, Dict, Callable
-from pathlib import Path
+from typing import List
 from datetime import datetime
 
-from fastapi import FastAPI, Depends, HTTPException, File, UploadFile, Request, Response, Query
+from fastapi import FastAPI, Depends, File, UploadFile, Query
 from fastapi.openapi.utils import get_openapi
-from fastapi.routing import APIRoute
 from fastapi.staticfiles import StaticFiles
-from sqlalchemy.orm import Session
-
-from .database import SessionLocal, engine
-from . import schemas, models
-from .services import userService, occurrenceService, birdService, familyService, speciesService
-from .queryClasses import Color, Size, Shape, Breeding
-from .utils import uploadPicture
 from fastapi.middleware.gzip import GZipMiddleware
 
-picture_dir = '/pictures'
+from sqlalchemy.orm import Session
+
+from config.config import SessionLocal, engine
+from model import models, schemas
+from services import userService, occurrenceService, birdService, familyService, speciesService
+from model.queryClasses import Color, Size, Shape, Breeding
+from config.config import picture_dir
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -45,7 +41,7 @@ app.openapi = custom_openapi
 
 app.add_middleware(GZipMiddleware, minimum_size=200)
 
-app.mount("/pictures", StaticFiles(directory="pictures"), name="pictures")
+app.mount(picture_dir, StaticFiles(directory=picture_dir), name="pictures")
 
 
 # Dependency

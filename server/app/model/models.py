@@ -1,7 +1,7 @@
 from sqlalchemy import Column, ForeignKey, Integer, Float, String, DateTime, Enum, Text
 from sqlalchemy.orm import relationship
 
-from .database import Base
+from config.config import Base
 from .queryClasses import Color, Size, Shape, Breeding
 
 

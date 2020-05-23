@@ -1,9 +1,7 @@
 import pandas as pd
-from sqlalchemy import Integer, String, Enum
 
-from server.database import engine
-from server import models
-from server.queryClasses import Shape, Breeding
+from app.config.config import engine
+from app.model import models
 
 if __name__ == "__main__":
 
