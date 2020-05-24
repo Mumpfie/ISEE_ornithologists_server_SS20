@@ -22,7 +22,7 @@ def custom_openapi():
         return app.openapi_schema
     openapi_schema = get_openapi(
         title="Ornithologists REST API",
-        version="1.0.1",
+        version="1.0.2",
         description="This API provides access to the user and IOC bird data for the Ornithologists app.",
         routes=app.routes
 
