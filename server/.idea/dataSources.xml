@@ -15,5 +15,11 @@
         </library>
       </libraries>
     </data-source>
+    <data-source source="LOCAL" name="ornithologists_api@ornithologists.de" uuid="99e565f3-7aef-4601-a9a6-e2a1f584f867">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://ornithologists.de:5432/ornithologists_api</jdbc-url>
+    </data-source>
   </component>
 </project>
