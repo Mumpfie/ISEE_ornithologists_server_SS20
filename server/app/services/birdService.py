@@ -1,5 +1,6 @@
 from typing import List
 
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 
 from .occurrenceService import get_occurrences
@@ -21,7 +22,9 @@ def get_birds(
     query = db.query(models.Bird)
 
     if part_name is not None:
-        query = query.filter(models.Bird.species.has(models.Species.name_english.contains(part_name)))
+        query = query\
+            .join(models.Species)\
+            .filter(func.lower(models.Species.name_english).contains(func.lower(part_name)))
     if color is not None:
         query = query.filter(models.Bird.color == color)
     if size is not None:
