@@ -93,7 +93,7 @@ def get_occurrences(
                              (models.Occurrence.longitude - longitude) * (models.Occurrence.longitude - longitude) <=
                              radius * radius)
 
-    return query.limit(limit).all()
+    return query.order_by(models.Occurrence.timestamp.desc()).limit(limit).all()
 
 
 def update_occurrence(db: Session, id: int, updated_occurrence: schemas.Occurrence) -> models.Occurrence:
