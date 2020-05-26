@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="sql_app" uuid="de7a327e-c4c2-4bf2-9a1b-e52411227ef9">
-      <driver-ref>sqlite.xerial</driver-ref>
+    <data-source source="LOCAL" name="ornithologists_api@ornithologists.de" uuid="99e565f3-7aef-4601-a9a6-e2a1f584f867">
+      <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
       <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/sql_app.db</jdbc-url>
