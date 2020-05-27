@@ -4,20 +4,6 @@
     <data-source source="LOCAL" name="ornithologists_api@ornithologists.de" uuid="99e565f3-7aef-4601-a9a6-e2a1f584f867">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
-      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/sql_app.db</jdbc-url>
-      <libraries>
-        <library>
-          <url>file://$APPLICATION_CONFIG_DIR$/jdbc-drivers/Xerial SQLiteJDBC/3.25.1/sqlite-jdbc-3.25.1.jar</url>
-        </library>
-        <library>
-          <url>file://$APPLICATION_CONFIG_DIR$/jdbc-drivers/Xerial SQLiteJDBC/3.25.1/license.txt</url>
-        </library>
-      </libraries>
-    </data-source>
-    <data-source source="LOCAL" name="ornithologists_api@ornithologists.de" uuid="99e565f3-7aef-4601-a9a6-e2a1f584f867">
-      <driver-ref>postgresql</driver-ref>
-      <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql://ornithologists.de:5432/ornithologists_api</jdbc-url>
     </data-source>

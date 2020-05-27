@@ -1,12 +1,14 @@
+import os
 from typing import List
 from datetime import datetime
 
-from fastapi import FastAPI, Depends, File, UploadFile, Query
+from fastapi import FastAPI, Depends, File, UploadFile, Query, HTTPException
 from fastapi.openapi.utils import get_openapi
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.gzip import GZipMiddleware
 
 from sqlalchemy.orm import Session
+from fastapi.responses import FileResponse
 
 from config.config import SessionLocal, engine
 from model import models, schemas
@@ -41,7 +43,7 @@ app.openapi = custom_openapi
 
 app.add_middleware(GZipMiddleware, minimum_size=200)
 
-app.mount(picture_dir, StaticFiles(directory=picture_dir), name="pictures")
+#app.mount(picture_dir, StaticFiles(directory=picture_dir), name="pictures")
 
 
 # Dependency
@@ -161,3 +163,28 @@ def read_family(name_scientific: str, db: Session = Depends(get_db)):
 @app.get("/species/{name_scientific}", tags=["Species"], operation_id='get_species_by_name', response_model=schemas.Species)
 def read_species(name_scientific: str, db: Session = Depends(get_db)):
     return speciesService.get_species(db, name_scientific)
+
+##################
+# Pictures
+##################
+
+@app.get("/pictures", tags=["Pictures"], operation_id="get_picture_by_filepath", responses={
+        200: {
+            "content":
+                {
+                    "image/jpeg":
+                     {
+                         "schema":
+                          {
+                              "type": "string",
+                              "format": "binary"
+                          }
+                      }
+                },
+            "description": "Return the picture.",
+        }
+    })
+def read_file(picture_path: str):
+    if(not os.path.isfile(picture_dir + picture_path)):
+        raise HTTPException(404, "File does not exist")
+    return FileResponse(picture_dir + picture_path, 200)
