@@ -49,7 +49,7 @@ async def add_picture_to_occurrence(db: Session, id: int, picture: UploadFile) -
     path = Path(occurrence_picture_dir, str(occurrence.id) + '.jpeg')
     await uploadPicture(picture, path, override=True)
 
-    occurrence.picture_url = str(occurrence.id) + '.jpeg'
+    occurrence.picture_url = '/' + str(occurrence.id) + '.jpeg'
     db.commit()
     db.refresh(occurrence)
     return occurrence

@@ -29,7 +29,7 @@ async def add_picture_to_user(db: Session, id: int, picture: UploadFile) -> sche
     path = Path(user_picture_dir, str(user.id) + '.jpeg')
     await uploadPicture(picture, path, override=True)
 
-    user.picture_url = str(user.id) + '.jpeg'
+    user.picture_url = '/' + str(user.id) + '.jpeg'
     db.commit()
     db.refresh(user)
     return user
