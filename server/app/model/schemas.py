@@ -11,11 +11,11 @@ from .queryClasses import Color, Size, Shape, Breeding
 
 class UserBase(BaseModel):
     id: int = Field(default=None, readOnly=True)
-    picture_url: str = Field(default=None, readOnly=True, max_length=100)
     name: str = Field(max_length=25)
 
     class Config:
         orm_mode = True
+
 
 class User(UserBase):
     bird_occurrences: List[Occurrence] = Field(default=[], readOnly=True, nullable=False)
@@ -26,13 +26,13 @@ class User(UserBase):
             datetime: lambda dt: dt.replace(tzinfo=timezone.utc).isoformat()
         }
 
+
 # Occurrence
 
 class Occurrence(BaseModel):
     id: int = Field(default=None, readOnly=True)
     timestamp: datetime = None
     note: str = None
-    picture_url: str = Field(default=None, readOnly=True, max_length=100)
     longitude: float = Field(format="double", ge=-180, le=180)
     latitude: float = Field(format="double", ge=-90, le=90)
     altitude: float = Field(default=0, format="double", ge=0, le=10000)
@@ -52,7 +52,6 @@ class Occurrence(BaseModel):
 
 class BirdBase(BaseModel):
     id: int = Field(default=None, readOnly=True)
-    picture_url: str = Field(default=None, max_length=100)
     taxon: str = Field(max_length=25)
     genus: str = Field(max_length=25)
     order: str = Field(max_length=25)
@@ -67,6 +66,7 @@ class BirdBase(BaseModel):
 
     class Config:
         orm_mode = True
+
 
 class Bird(BirdBase):
     occurrences: List[Occurrence] = Field(default=[], readOnly=True, nullable=False)
@@ -106,6 +106,23 @@ class FileResponse(BaseModel):
     class Config:
         orm_mode = True
 
+
+pictureResponse = {
+    200: {
+        "content":
+            {
+                "image/jpeg":
+                    {
+                        "schema":
+                            {
+                                "type": "string",
+                                "format": "binary"
+                            }
+                    }
+            },
+        "description": "Return the picture.",
+    }
+}
 
 User.update_forward_refs()
 UserBase.update_forward_refs()

@@ -4,6 +4,7 @@ from pathlib import Path
 
 from sqlalchemy.orm import Session
 from fastapi import UploadFile, HTTPException
+from fastapi.responses import FileResponse
 
 from model import models, schemas
 from util.utils import uploadPicture
@@ -26,13 +27,18 @@ async def add_picture_to_user(db: Session, id: int, picture: UploadFile) -> sche
     user = db.query(models.User).get(id)
 
     path = Path(user_picture_dir, str(user.id) + '.jpeg')
-    path = await uploadPicture(picture, path, override=True)
+    await uploadPicture(picture, path, override=True)
 
-    user.picture_url = str(path)
+    user.picture_url = str(user.id) + '.jpeg'
     db.commit()
     db.refresh(user)
     return user
 
+async def get_user_picture(db: Session, id: int) -> FileResponse:
+    picture = get_user(db, id).picture_url
+    if (not os.path.isfile(user_picture_dir + picture)):
+        raise HTTPException(404, "Picture does not exist")
+    return FileResponse(user_picture_dir + picture, 200)
 
 def get_user(db: Session, id: int) -> schemas.User:
     return db.query(models.User).get(id)

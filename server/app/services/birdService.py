@@ -1,13 +1,17 @@
+import os
 from typing import List
 
 from sqlalchemy import func
 from sqlalchemy.orm import Session
 
+from config.config import picture_dir
 from .occurrenceService import get_occurrences
 from model.queryClasses import Color, Shape, Size, Breeding
 from fastapi import HTTPException
+from fastapi.responses import FileResponse
 from model import models, schemas
 
+bird_picture_dir = picture_dir + "/bird"
 
 def get_birds(
         db: Session,
@@ -46,3 +50,9 @@ def get_bird(db: Session, id: int) -> schemas.Bird:
     bird = db.query(models.Bird).get(id)
     bird.occurrences = get_occurrences(db, bird_id=bird.id)
     return bird
+
+async def get_bird_picture(db: Session, id: int) -> FileResponse:
+    picture = get_bird(db, id).picture_url
+    if (not os.path.isfile(bird_picture_dir + picture)):
+        raise HTTPException(404, "Picture does not exist")
+    return FileResponse(bird_picture_dir + picture, 200)

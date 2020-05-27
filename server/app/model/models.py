@@ -18,7 +18,7 @@ class User(Base):
 
 
 class Occurrence(Base):
-    __tablename__ = "Occurrence"
+    __tablename__ = "occurrence"
 
     id = Column(Integer, primary_key=True)
     timestamp = Column(DateTime, nullable=False)

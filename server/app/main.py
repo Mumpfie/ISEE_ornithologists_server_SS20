@@ -68,6 +68,10 @@ async def create_user(user: schemas.User, db: Session = Depends(get_db)):
 async def add_picture_to_user(id: int, picture: UploadFile = File(...), db: Session = Depends(get_db)):
     return await userService.add_picture_to_user(db, id, picture)
 
+@app.get("/pictures/user/{user_id}", tags=["User"], operation_id="get_user_picture", responses=schemas.pictureResponse)
+async def get_user_picture(user_id: int, db: Session = Depends(get_db)):
+    return await userService.get_user_picture(db, user_id)
+
 @app.get("/user/{id}", operation_id='get_user', tags=["User"], response_model=schemas.User)
 def read_user(id: int, db: Session = Depends(get_db)):
     return userService.get_user(db, id)
@@ -97,6 +101,9 @@ def create_occurrence(occurrence: schemas.Occurrence, db: Session = Depends(get_
 async def add_picture_to_occurrence(id: int, picture: UploadFile = File(...), db: Session = Depends(get_db)):
     return await occurrenceService.add_picture_to_occurrence(db, id, picture)
 
+@app.get("/pictures/occurrence/{occurrence_id}", tags=["Occurrence"], operation_id="get_occurrence_picture", responses=schemas.pictureResponse)
+async def get_occurrence_picture(occurrence_id: int, db: Session = Depends(get_db)):
+    return await occurrenceService.get_occurrence_picture(db, occurrence_id)
 
 @app.get("/occurrence/{id}", tags=["Occurrence"], operation_id='get_occurrence', response_model=schemas.Occurrence)
 def read_occurrence(id: int, db: Session = Depends(get_db)):
@@ -148,6 +155,10 @@ def query_bird(
 ):
     return birdService.get_birds(db, part_name, color, size, shape, breeding, skip, limit)
 
+@app.get("/pictures/bird/{bird_id}", tags=["Bird"], operation_id="get_bird_picture", responses=schemas.pictureResponse)
+async def get_bird_picture(bird_id: int, db: Session = Depends(get_db)):
+    return await birdService.get_bird_picture(db, bird_id)
+
 ##################
 # Family
 ##################
@@ -163,28 +174,3 @@ def read_family(name_scientific: str, db: Session = Depends(get_db)):
 @app.get("/species/{name_scientific}", tags=["Species"], operation_id='get_species_by_name', response_model=schemas.Species)
 def read_species(name_scientific: str, db: Session = Depends(get_db)):
     return speciesService.get_species(db, name_scientific)
-
-##################
-# Pictures
-##################
-
-@app.get("/pictures", tags=["Pictures"], operation_id="get_picture_by_filepath", responses={
-        200: {
-            "content":
-                {
-                    "image/jpeg":
-                     {
-                         "schema":
-                          {
-                              "type": "string",
-                              "format": "binary"
-                          }
-                      }
-                },
-            "description": "Return the picture.",
-        }
-    })
-def read_file(picture_path: str):
-    if(not os.path.isfile(picture_dir + picture_path)):
-        raise HTTPException(404, "File does not exist")
-    return FileResponse(picture_dir + picture_path, 200)

@@ -5,6 +5,7 @@ from datetime import datetime, timezone
 
 from sqlalchemy.orm import Session
 from fastapi import UploadFile, HTTPException
+from fastapi.responses import FileResponse
 
 from model import models, schemas
 from util.utils import uploadPicture
@@ -46,15 +47,20 @@ async def add_picture_to_occurrence(db: Session, id: int, picture: UploadFile) -
         raise HTTPException(422, "Occurrence with id {} doesn't exist".format(id))
 
     path = Path(occurrence_picture_dir, str(occurrence.id) + '.jpeg')
-    path = await uploadPicture(picture, path, override=True)
+    await uploadPicture(picture, path, override=True)
 
-    occurrence.picture_url = str(path)
+    occurrence.picture_url = str(occurrence.id) + '.jpeg'
     db.commit()
     db.refresh(occurrence)
     return occurrence
 
+async def get_occurrence_picture(db: Session, id: int) -> FileResponse:
+    picture = get_occurrence(db, id).picture_url
+    if (not os.path.isfile(occurrence_picture_dir + picture)):
+        raise HTTPException(404, "Picture does not exist")
+    return FileResponse(occurrence_picture_dir + picture, 200)
 
-def get_occurrence(db: Session, id: int):
+def get_occurrence(db: Session, id: int) -> schemas.Occurrence:
     occurrence = db.query(models.Occurrence).get(id)
     if occurrence is None:
         raise HTTPException(404, "Occurrence not found")
