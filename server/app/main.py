@@ -1,7 +1,8 @@
+import os
 from typing import List
 from datetime import datetime
 
-from fastapi import FastAPI, Depends, File, UploadFile, Query
+from fastapi import FastAPI, Depends, File, UploadFile, Query, HTTPException
 from fastapi.openapi.utils import get_openapi
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.gzip import GZipMiddleware
@@ -184,4 +185,6 @@ def read_species(name_scientific: str, db: Session = Depends(get_db)):
         }
     })
 def read_file(picture_path: str):
+    if(not os.path.isfile(picture_dir + picture_path)):
+        raise HTTPException(404, "File does not exist")
     return FileResponse(picture_dir + picture_path, 200)
