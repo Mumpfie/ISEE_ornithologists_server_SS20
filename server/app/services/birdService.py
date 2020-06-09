@@ -26,9 +26,7 @@ def get_birds(
     query = db.query(models.Bird)
 
     if part_name is not None:
-        query = query\
-            .join(models.Species)\
-            .filter(func.lower(models.Species.name_english).contains(func.lower(part_name)))
+        query = query.filter(func.lower(models.Bird.species_name_english).contains(func.lower(part_name)))
     if color is not None:
         query = query.filter(models.Bird.color == color)
     if size is not None:

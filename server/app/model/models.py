@@ -41,8 +41,12 @@ class Bird(Base):
     taxon = Column(String(25))
     genus = Column(String(25))
     order = Column(String(25))
-    family_scientific_name = Column(String(25), ForeignKey('family.name_scientific'), nullable=False)
-    species_scientific_name = Column(String(25), ForeignKey('species.name_scientific'), nullable=False)
+    family_name_scientific = Column(String(25))
+    family_name_english = Column(String(50))
+    family_name_german = Column(String(50))
+    species_name_scientific = Column(String(25))
+    species_name_english = Column(String(50))
+    species_name_german = Column(String(50))
     authority = Column(String(40))
     color = Column(Enum(Color))
     size = Column(Enum(Size))
@@ -53,28 +57,4 @@ class Bird(Base):
     bird_occurrences = relationship('Occurrence', backref='bird')
 
     def __repr__(self):
-        return '<Bird {}>'.format(self.species_scientific_name)
-
-
-class Family(Base):
-    __tablename__ = "family"
-
-    name_scientific = Column(String(25), primary_key=True)
-    name_english = Column(String(50))
-    name_german = Column(String(50))
-    birds = relationship('Bird', backref='family')
-
-    def __repr__(self):
-        return '<Family {}>'.format(self.name_scientific)
-
-
-class Species(Base):
-    __tablename__ = "species"
-
-    name_scientific = Column(String(25), primary_key=True)
-    name_english = Column(String(50))
-    name_german = Column(String(50))
-    birds = relationship('Bird', backref='species')
-
-    def __repr__(self):
-        return '<Species {}>'.format(self.name_scientific)
+        return '<Bird {}>'.format(self.species_name_english)

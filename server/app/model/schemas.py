@@ -61,9 +61,12 @@ class BirdBase(BaseModel):
     shape: Shape = None
     breeding: Breeding = None
     subregion: str = Field(max_length=150)
-    family: Family
-    species: Species
-
+    family_name_scientific: str = None
+    family_name_english: str = None
+    family_name_german: str = None
+    species_name_scientific: str = None
+    species_name_english: str = None
+    species_name_german: str = None
     class Config:
         orm_mode = True
 
@@ -76,29 +79,6 @@ class Bird(BirdBase):
         json_encoders = {
             datetime: lambda dt: dt.replace(tzinfo=timezone.utc).isoformat()
         }
-
-
-# Family
-
-class Family(BaseModel):
-    name_scientific: str
-    name_english: str = None
-    name_german: str = None
-
-    class Config:
-        orm_mode = True
-
-
-# Species
-
-class Species(BaseModel):
-    name_scientific: str
-    name_english: str = None
-    name_german: str = None
-
-    class Config:
-        orm_mode = True
-
 
 class FileResponse(BaseModel):
     file_url: str

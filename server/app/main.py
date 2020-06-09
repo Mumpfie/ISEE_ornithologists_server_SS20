@@ -12,7 +12,7 @@ from fastapi.responses import FileResponse
 
 from config.config import SessionLocal, engine
 from model import models, schemas
-from services import userService, occurrenceService, birdService, familyService, speciesService
+from services import userService, occurrenceService, birdService
 from model.queryClasses import Color, Size, Shape, Breeding
 from config.config import picture_dir
 
@@ -24,7 +24,7 @@ def custom_openapi():
         return app.openapi_schema
     openapi_schema = get_openapi(
         title="Ornithologists REST API",
-        version="1.0.4",
+        version="1.0.5",
         description="This API provides access to the user and IOC bird data for the Ornithologists app.",
         routes=app.routes
 
@@ -158,19 +158,3 @@ def query_bird(
 @app.get("/pictures/bird/{bird_id}", tags=["Bird"], operation_id="get_bird_picture", responses=schemas.pictureResponse)
 async def get_bird_picture(bird_id: int, db: Session = Depends(get_db)):
     return await birdService.get_bird_picture(db, bird_id)
-
-##################
-# Family
-##################
-
-@app.get("/family/{name_scientific}", tags=["Family"], operation_id='get_family_by_name', response_model=schemas.Family)
-def read_family(name_scientific: str, db: Session = Depends(get_db)):
-    return familyService.get_families(db, name_scientific)
-
-##################
-# Species
-##################
-
-@app.get("/species/{name_scientific}", tags=["Species"], operation_id='get_species_by_name', response_model=schemas.Species)
-def read_species(name_scientific: str, db: Session = Depends(get_db)):
-    return speciesService.get_species(db, name_scientific)
