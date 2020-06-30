@@ -19,8 +19,10 @@ if __name__ == "__main__":
         'picture_url': 'picture_url',
         'Family (Scientific)': 'family_name_scientific',
         'Family (English)': 'family_name_english',
+        'Family (German)': 'family_name_german',
         'Species (Scientific)': 'species_name_scientific',
-        'Species (English)': 'species_name_english'
+        'Species (English)': 'species_name_english',
+        'Species (German)': 'species_name_german'
     }
 
     birds: pd.DataFrame = pd.read_csv(
@@ -33,5 +35,5 @@ if __name__ == "__main__":
     # TODO: implement some kind of ARRAY(ENUM(Breeding)) to handle multiple regions for a bird
     birds = birds.assign(breeding='eu')
 
-    birds.to_sql('bird', engine, if_exists='append', index_label='id')
+    birds.to_sql('bird', engine, if_exists='replace', index_label='id')
 

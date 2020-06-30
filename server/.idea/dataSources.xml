@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="ornithologists_api@ornithologists.de" uuid="99e565f3-7aef-4601-a9a6-e2a1f584f867">
+    <data-source source="LOCAL" name="ornithologists_api@ornithologists.de" uuid="414a81a9-bb37-4c2d-94d2-280379d23336">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
