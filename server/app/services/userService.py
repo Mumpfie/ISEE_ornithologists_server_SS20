@@ -64,6 +64,8 @@ def update_user(db: Session, id: int, new_prop: schemas.User) -> schemas.User:
 def delete_user(db: Session, id: int) -> schemas.User:
     user: models.User = db.query(models.User).get(id)
 
+    if user is None:
+        raise HTTPException(404,"User does not exist!")
     if user.picture_url is not None:
         pic_path: Path = Path(user.picture_url)
         if pic_path.exists():
@@ -72,4 +74,3 @@ def delete_user(db: Session, id: int) -> schemas.User:
     db.query(models.Occurrence).filter(models.Occurrence.user_id == id).delete()
     db.delete(user)
     db.commit()
-    return user

@@ -56,9 +56,15 @@ async def add_picture_to_occurrence(db: Session, id: int, picture: UploadFile) -
 
 async def get_occurrence_picture(db: Session, id: int) -> FileResponse:
     picture = get_occurrence(db, id).picture_url
-    if (not os.path.isfile(occurrence_picture_dir + picture)):
+    if (picture is None or not os.path.isfile(occurrence_picture_dir + picture)):
         raise HTTPException(404, "Picture does not exist")
     return FileResponse(occurrence_picture_dir + picture, 200)
+
+async def has_occurrence_picture(db: Session, id: int) -> bool:
+    picture = get_occurrence(db, id).picture_url
+    if (picture is not None and os.path.isfile(occurrence_picture_dir + picture)):
+        return True
+    return False
 
 def get_occurrence(db: Session, id: int) -> schemas.Occurrence:
     occurrence = db.query(models.Occurrence).get(id)
@@ -131,6 +137,9 @@ def update_occurrence(db: Session, id: int, updated_occurrence: schemas.Occurren
 def delete_occurrence(db: Session, id: int):
     occurrence: models.Occurrence = db.query(models.Occurrence).get(id)
 
+    if occurrence is None:
+        raise HTTPException(404, "Occurrence not found")
+
     if occurrence.picture_url is not None:
         pic_path: Path = Path(occurrence.picture_url)
         if pic_path.exists():
@@ -138,5 +147,4 @@ def delete_occurrence(db: Session, id: int):
 
     db.delete(occurrence)
     db.commit()
-    return occurrence
 

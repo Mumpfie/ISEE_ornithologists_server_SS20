@@ -2,19 +2,16 @@ import os
 from typing import List
 from datetime import datetime
 
-from fastapi import FastAPI, Depends, File, UploadFile, Query, HTTPException
+from fastapi import FastAPI, Depends, File, UploadFile, Query, Response
 from fastapi.openapi.utils import get_openapi
-from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.gzip import GZipMiddleware
 
 from sqlalchemy.orm import Session
-from fastapi.responses import FileResponse
 
 from config.config import SessionLocal, engine
 from model import models, schemas
 from services import userService, occurrenceService, birdService
 from model.queryClasses import Color, Size, Shape, Breeding
-from config.config import picture_dir
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -24,7 +21,7 @@ def custom_openapi():
         return app.openapi_schema
     openapi_schema = get_openapi(
         title="Ornithologists REST API",
-        version="1.0.5",
+        version="1.0.6",
         description="This API provides access to the user and IOC bird data for the Ornithologists app.",
         routes=app.routes
 
@@ -84,9 +81,9 @@ def get_users(name: str = None, skip: int = 0, limit: int = 10, db: Session = De
 def update_user(id: int, new_prop: schemas.User, db: Session = Depends(get_db)):
     return userService.update_user(db, id, new_prop)
 
-@app.delete("/user/{id}", operation_id='delete_user', tags=["User"], response_model=schemas.User)
+@app.delete("/user/{id}", operation_id='delete_user', tags=["User"], status_code=204)
 def delete_user(id: int, db: Session = Depends(get_db)):
-    return userService.delete_user(db, id)
+    userService.delete_user(db, id)
 
 
 ##################
@@ -104,6 +101,13 @@ async def add_picture_to_occurrence(id: int, picture: UploadFile = File(...), db
 @app.get("/pictures/occurrence/{occurrence_id}", tags=["Occurrence"], operation_id="get_occurrence_picture", responses=schemas.pictureResponse)
 async def get_occurrence_picture(occurrence_id: int, db: Session = Depends(get_db)):
     return await occurrenceService.get_occurrence_picture(db, occurrence_id)
+
+@app.head("/pictures/occurrence/{occurrence_id}", tags=["Occurrence"], operation_id="has_occurrence_picture", status_code=204)
+async def has_occurrence_picture(occurrence_id: int, db: Session = Depends(get_db)):
+    if(await occurrenceService.has_occurrence_picture(db, occurrence_id)):
+        return Response(status_code=204, content=None)
+    else:
+        return Response(status_code=404, content=None)
 
 @app.get("/occurrence/{id}", tags=["Occurrence"], operation_id='get_occurrence', response_model=schemas.Occurrence)
 def read_occurrence(id: int, db: Session = Depends(get_db)):
@@ -129,9 +133,9 @@ def query_occurrence(
 def update_occurrence(id: int, new_prop: schemas.Occurrence, db: Session = Depends(get_db)):
     return occurrenceService.update_occurrence(db, id, new_prop)
 
-@app.delete("/occurrence/{id}", tags=["Occurrence"], operation_id='delete_occurrence', response_model=schemas.Occurrence)
+@app.delete("/occurrence/{id}", tags=["Occurrence"], operation_id='delete_occurrence', status_code=204)
 def delete_occurrence(id: int, db: Session = Depends(get_db)):
-    return occurrenceService.delete_occurrence(db, id)
+    occurrenceService.delete_occurrence(db, id)
 
 
 ##################
