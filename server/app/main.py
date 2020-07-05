@@ -149,6 +149,7 @@ def read_bird(id: int, db: Session = Depends(get_db)):
 @app.get("/bird", tags=["Bird"], operation_id='get_birds', response_model=List[schemas.Bird])
 def query_bird(
         part_name: str = None,
+        language: str = 'en',
         color: Color = None,
         size: Size = None,
         shape: Shape = None,
@@ -157,7 +158,7 @@ def query_bird(
         limit: int = 20,
         db: Session = Depends(get_db)
 ):
-    return birdService.get_birds(db, part_name, color, size, shape, breeding, skip, limit)
+    return birdService.get_birds(db, part_name, language, color, size, shape, breeding, skip, limit)
 
 @app.get("/pictures/bird/{bird_id}", tags=["Bird"], operation_id="get_bird_picture", responses=schemas.pictureResponse)
 async def get_bird_picture(bird_id: int, db: Session = Depends(get_db)):

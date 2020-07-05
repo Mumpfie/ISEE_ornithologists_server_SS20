@@ -16,6 +16,7 @@ bird_picture_dir = picture_dir + "/bird"
 def get_birds(
         db: Session,
         part_name: str = None,
+        language: str = 'en',
         color: Color = None,
         size: Size = None,
         shape: Shape = None,
@@ -25,8 +26,10 @@ def get_birds(
 ) -> List[schemas.Bird]:
     query = db.query(models.Bird)
 
-    if part_name is not None:
+    if part_name is not None and language=='en':
         query = query.filter(func.lower(models.Bird.species_name_english).contains(func.lower(part_name)))
+    if part_name is not None and language=='de':
+        query = query.filter(func.lower(models.Bird.species_name_german).contains(func.lower(part_name)))
     if color is not None:
         query = query.filter(models.Bird.color == color)
     if size is not None:
